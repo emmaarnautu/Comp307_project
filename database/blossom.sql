@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2026 at 10:54 PM
+-- Generation Time: Nov 15, 2026 at 09:24 AM
 -- Server version: 10.11.16-MariaDB
 -- PHP Version: 8.5.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `blossom`
 --
-CREATE DATABASE IF NOT EXISTS `blossom` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `blossom`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +27,6 @@ USE `blossom`;
 -- Table structure for table `daily_logs`
 --
 
-DROP TABLE IF EXISTS `daily_logs`;
 CREATE TABLE `daily_logs` (
   `log_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -48,7 +45,6 @@ CREATE TABLE `daily_logs` (
 -- Table structure for table `habits`
 --
 
-DROP TABLE IF EXISTS `habits`;
 CREATE TABLE `habits` (
   `habit_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -64,7 +60,6 @@ CREATE TABLE `habits` (
 -- Table structure for table `habit_completions`
 --
 
-DROP TABLE IF EXISTS `habit_completions`;
 CREATE TABLE `habit_completions` (
   `completion_id` int(11) NOT NULL,
   `habit_id` int(11) NOT NULL,
@@ -77,7 +72,6 @@ CREATE TABLE `habit_completions` (
 -- Table structure for table `purchases`
 --
 
-DROP TABLE IF EXISTS `purchases`;
 CREATE TABLE `purchases` (
   `purchase_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -91,7 +85,6 @@ CREATE TABLE `purchases` (
 -- Table structure for table `shop_items`
 --
 
-DROP TABLE IF EXISTS `shop_items`;
 CREATE TABLE `shop_items` (
   `item_id` int(11) NOT NULL,
   `item_name` varchar(100) NOT NULL,
@@ -113,10 +106,23 @@ INSERT INTO `shop_items` (`item_id`, `item_name`, `item_type`, `price`, `image_p
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `ticket_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `ticket_code` char(64) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `expires_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `trees`
 --
 
-DROP TABLE IF EXISTS `trees`;
 CREATE TABLE `trees` (
   `tree_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -131,7 +137,6 @@ CREATE TABLE `trees` (
 -- Table structure for table `tree_decorations`
 --
 
-DROP TABLE IF EXISTS `tree_decorations`;
 CREATE TABLE `tree_decorations` (
   `decoration_id` int(11) NOT NULL,
   `purchase_id` int(11) NOT NULL,
@@ -145,7 +150,6 @@ CREATE TABLE `tree_decorations` (
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
@@ -199,6 +203,14 @@ ALTER TABLE `purchases`
 ALTER TABLE `shop_items`
   ADD PRIMARY KEY (`item_id`),
   ADD UNIQUE KEY `item_name` (`item_name`);
+
+--
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`ticket_id`),
+  ADD UNIQUE KEY `ticket_code` (`ticket_code`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `trees`
@@ -258,6 +270,12 @@ ALTER TABLE `shop_items`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `trees`
 --
 ALTER TABLE `trees`
@@ -303,6 +321,12 @@ ALTER TABLE `habit_completions`
 ALTER TABLE `purchases`
   ADD CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `shop_items` (`item_id`);
+
+--
+-- Constraints for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `trees`
