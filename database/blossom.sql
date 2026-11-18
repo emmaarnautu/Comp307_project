@@ -52,6 +52,7 @@ CREATE TABLE `habits` (
   `category` enum('Self Care','Productivity','Chores','Others') NOT NULL DEFAULT 'Others',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `last_completion_date` date DEFAULT NULL,
+  `days` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -162,6 +163,7 @@ CREATE TABLE `users` (
   `coins` int(11) NOT NULL DEFAULT 0,
   `current_streak` int(11) NOT NULL DEFAULT 0,
   `longest_streak` int(11) NOT NULL DEFAULT 0,
+  `last_streak_date` date DEFAULT NULL
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ;
 
