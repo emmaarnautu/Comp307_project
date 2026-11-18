@@ -141,6 +141,7 @@ CREATE TABLE `tree_decorations` (
   `decoration_id` int(11) NOT NULL,
   `purchase_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `position` enum('top','left','right','trunk','ground') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
