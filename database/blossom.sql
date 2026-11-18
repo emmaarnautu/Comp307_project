@@ -51,6 +51,7 @@ CREATE TABLE `habits` (
   `habit_name` varchar(100) NOT NULL,
   `category` enum('Self Care','Productivity','Chores','Others') NOT NULL DEFAULT 'Others',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `last_completion_date` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -124,7 +125,6 @@ CREATE TABLE `tickets` (
 --
 
 CREATE TABLE `trees` (
-  `tree_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `growth_points` int(11) NOT NULL DEFAULT 0,
   `growth_stage` int(11) NOT NULL DEFAULT 1,
@@ -216,8 +216,7 @@ ALTER TABLE `tickets`
 -- Indexes for table `trees`
 --
 ALTER TABLE `trees`
-  ADD PRIMARY KEY (`tree_id`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
+  ADD PRIMARY KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `tree_decorations`
@@ -279,7 +278,7 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT for table `trees`
 --
 ALTER TABLE `trees`
-  MODIFY `tree_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tree_decorations`
