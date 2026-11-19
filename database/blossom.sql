@@ -163,7 +163,7 @@ CREATE TABLE `users` (
   `coins` int(11) NOT NULL DEFAULT 0,
   `current_streak` int(11) NOT NULL DEFAULT 0,
   `longest_streak` int(11) NOT NULL DEFAULT 0,
-  `last_streak_date` date DEFAULT NULL
+  `last_streak_date` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp()
 ) ;
 
@@ -280,8 +280,8 @@ ALTER TABLE `tickets`
 --
 -- AUTO_INCREMENT for table `trees`
 --
-ALTER TABLE `trees`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+--ALTER TABLE `trees`
+ -- MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tree_decorations`
