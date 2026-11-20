@@ -1,5 +1,12 @@
 <?php
-//call on load using POST, echoes full tree's image: (base tree) + (decorations). Here assuming front end takes care of background/weather API call.
+header('Content-Type: application/json');
+/**
+ * Input parameters: user_id
+ * Returns:
+ * $response =
+ *      'treepath' => image path for tree
+ *      'decorations' => array containing all image paths for decorations
+ */
 
 //initialise db
 require_once "db.php";
@@ -14,23 +21,28 @@ $query->execute(['id' => $userID]);
 $treeGrowth = $query->fetch();
 
 //send query find all active decorations_ids
-$query = $pdo->prepare("SELECT decoration_id FROM tree_decorations WHERE user_id = :id");
+$query = $pdo->prepare(
+    "SELECT si.image_path
+FROM tree_decorations td
+JOIN purchases p ON td.purchase_id = p.purchase_id
+JOIN shop_items si ON p.item_id = si.item_id
+WHERE td.user_id = :id
+  AND td.is_active = 1
+  AND si.item_type = 'Decoration'"
+);
 $query->execute(['id' => $userID]);
-$decorationIDs = $query->fetchAll();
+$decorationArray = $query->fetchAll(PDO::FETCH_COLUMN);
 
 
-//returned html: 
-echo '<html>';
-$imageName = "treestage" . $treeGrowth . ".png";
-echo '<img src="' . $imageName . '">';
+//return:
+$imageName = "treestage" . $treeGrowth['growth_stage'] . ".png";
 
-foreach($decorationIDs as $decorationID) {
-    //find image_path from decorationID. Assumes decoration-id = item-id.
-    $query = $pdo->prepare("SELECT image_path FROM shop_items WHERE item_id = :id");
-    $query->execute(['id' => $decorationID]);
-    $imagePath = $query->fetch();
-    echo '<img src="' . $imagePath . '">';
-}
 
-echo '</html>';
+$response = [
+    'treepath' => $imageName,
+    'decorations' => $decorationArray
+];
+echo json_encode($response);
+exit;
+
 ?>
