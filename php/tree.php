@@ -1,10 +1,9 @@
 <?php
-header('Content-Type: application/json');
 /**
  * Input parameters: user_id
  * Returns:
  * $response =
- *      'treepath' => image path for tree
+ *      'treepath' => image path for tree from asset
  *      'decorations' => array containing all image paths for decorations
  */
 
@@ -35,7 +34,7 @@ $decorationArray = $query->fetchAll(PDO::FETCH_COLUMN);
 
 
 //return:
-$imageName = "treestage" . $treeGrowth['growth_stage'] . ".png";
+$imageName = "/asset/" . $treeGrowth['growth_stage'] . ".png";
 
 
 $response = [

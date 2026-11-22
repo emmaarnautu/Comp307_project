@@ -4,13 +4,13 @@
  *      Input parameters: "user_id", "item_id"
  *      Returns:
  *          $response =
- *              'status' => 0|1, failed or succeeded
- *
+ *              'status' => 0|1 (failed|succeeded)
+ *              'message' => "Item bought!" | "Error: Decoration already bought!","Error: Tree not in final stage!", "Error: Not enough coins!"
  *  TOGGLE:
  *       Input parameters: "user_id", "item_id"
  *       Returns:
  *           $response =
- *               'status' => 0|1, failed or succeeded
+ *               'status' => 0|1, failed (item not owned) or succeeded
  *
  *  SHOW_COINS:
  *       Input parameters: "user_id"
@@ -22,7 +22,7 @@
  *       Input parameters: "user_id"
  *       Returns:
  *           $response =
- *               'element' =>
+ *               'elements' =>
  *                     'item_id' =>
  *                     'item_name' =>
  *                     'is_bought' => 0|1
@@ -32,7 +32,7 @@
 //initialise db
 require_once "db.php";
 
-//switch case functions: habit-done(habitID, userID). habit-added(habit_name, habit_days, user_ID, habit_category). show-habits(category, userID).
+//method menu
 $method = '0';
 if (isset($_POST['functionName'])) {
     $method = strtoupper(trim($_POST['functionName']));
@@ -46,7 +46,6 @@ switch ($method) {
         show_coins();
     case "SHOW_SHOP" :
         show_shop();
-        break;
     default :
         echo "Error: No such method found! shop.php";
         exit;
@@ -66,11 +65,48 @@ function buy() :void
     $isFound = $query->fetch();
     if($isFound) {
         $response = [
-            'status' => 0
+            'status' => 0,
+            'message' => "Error: Decoration already bought!"
         ];
         echo json_encode($response);
         exit;
     }
+    //check if tree is final stage
+    $query = $pdo->prepare("SELECT growth_stage FROM trees WHERE user_id = :id");
+    $query->execute([
+        'id' => $userID]);
+    $tree_growth = $query->fetchColumn();
+    if((int)$tree_growth !== 7) {
+        $response = [
+            'status' => 0,
+            'message' => "Error: Tree not in final stage!"
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
+    //check if user has enough coins
+    $userID = $_POST["user_id"] ?? "";
+    $query = $pdo->prepare("SELECT coins FROM users WHERE user_id = :user_id");
+    $query->execute([
+        'user_id' => $userID
+    ]);
+    $coins = $query->fetchColumn();
+    $query = $pdo->prepare("SELECT price FROM shop_items WHERE item_id = :item_id");
+    $query->execute([
+        'item_id' => $itemID
+    ]);
+    $price = $query->fetchColumn();
+
+    if((int)$coins < (int)$price) {
+        $response = [
+            'status' => 0,
+            'message' => "Error: Not enough coins!"
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     //make new purchase and decoration entries
     $query = $pdo->prepare("INSERT INTO purchases (user_id, item_id) VALUES (:user_id, :item_id)");
     $query->execute([
@@ -79,10 +115,23 @@ function buy() :void
 
     $purchaseID = $pdo->lastInsertId();
 
-    $query = $pdo->prepare("INSERT INTO tree_decorations (user_id, purchase_id, is_active, position) VALUES (:user_id, :purchase_id, 0, 'top')");
+    $query = $pdo->prepare("INSERT INTO tree_decorations (user_id, purchase_id, is_active) VALUES (:user_id, :purchase_id, 0)");
     $query->execute([
         'user_id' => $userID,
-        'purchase_id' => $purchaseID['purchase_id']]);
+        'purchase_id' => $purchaseID]);
+
+    $newCoins = (int)$coins - (int)$price;
+
+    //calculate and update coins
+    $query = $pdo->prepare("
+    UPDATE users 
+        SET coins = :newCoins 
+        WHERE user_id = :user_id 
+        ");
+
+    $query->execute([
+        'newCoins' => $newCoins,
+        'user_id' => $userID]);
 
     $response = [
         'status' => 1
@@ -102,7 +151,7 @@ function toggle() : void
     $query->execute([
         'id' => $userID,
         'item_id' => $itemID]);
-    $purchaseID = $query->fetch();
+    $purchaseID = $query->fetch(PDO::FETCH_ASSOC);
     if(!$purchaseID) {
         $response = [
             'status' => 0
@@ -110,6 +159,7 @@ function toggle() : void
         echo json_encode($response);
         exit;
     }
+
     $query = $pdo->prepare("
     UPDATE tree_decorations 
         SET is_active = 1 - is_active 
@@ -136,9 +186,17 @@ function show_coins() : void
     $query->execute([
         'user_id' => $userID
     ]);
+
     $coins = $query->fetch();
+    if (!$coins) {
+        echo json_encode([
+            'error' => 'User not found'
+        ]);
+        exit;
+    }
+
     $response = [
-        'coins' => $coins['coins']
+        'coins' => (int)$coins['coins']
     ];
     echo json_encode($response);
     exit;
@@ -148,6 +206,57 @@ function show_shop() : void
 {
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
-}
+    //determine how many items in shop
+    $query = $pdo->prepare("
+    SELECT item_id, item_name
+    FROM shop_items
+    ORDER BY item_id
+");
 
+    $query->execute();
+
+    $items = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($items as $item) {
+        $itemID = $item['item_id'];
+        //return item name
+        $query = $pdo->prepare("SELECT item_name FROM shop_items WHERE item_id = :item_id");
+        $query->execute([
+            'item_id' => $itemID
+        ]);
+        $item_name = $query->fetch();
+
+        //check if user bought one already
+        $query = $pdo->prepare("SELECT purchase_id FROM purchases WHERE user_id = :id AND item_id = :item_id");
+        $query->execute([
+            'id' => $userID,
+            'item_id' => $itemID]);
+        $purchaseID = $query->fetch();
+        if(!$purchaseID) {
+            $is_bought = false;
+            $is_active = false;
+        }
+        else{
+            $is_bought = true;
+            //check if active
+            $query = $pdo->prepare("SELECT is_active FROM tree_decorations WHERE user_id = :id AND purchase_id = :purchase_id");
+            $query->execute([
+                'id' => $userID,
+                'purchase_id' => $purchaseID['purchase_id']]);
+            $is_active = $query->fetchColumn();
+        }
+
+        $elements[] = [
+            'item_id' => $itemID,
+            'item_name' => $item_name['item_name'],
+            'is_bought' => $is_bought,
+            'is_active' => $is_active
+        ];
+    }
+    $response = [
+            'elements' => $elements
+    ];
+    echo json_encode($response);
+    exit;
+}
 ?>
