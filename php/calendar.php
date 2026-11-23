@@ -57,7 +57,10 @@ switch ($method) {
     case "SHOW_LOGS" :
         show_logs();
     default :
-        echo "Error: No such method found! shop.php";
+        $response = [
+            'error' => "Invalid request",
+        ];
+        echo json_encode($response);
         exit;
 }
 
@@ -76,6 +79,15 @@ function store_log() : void {
     $mood = $_POST["mood"] ?? "";
     $weather  = $_POST["weather"] ?? "";
     $temperature = $_POST["temperature"] ?? "";
+
+    if($userID == "" || $mood == "" || $weather == "" || $temperature == "") {
+        $response = [
+            'error' => "Valid userID mood, weather and temperature required!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $today = (new DATETIME('today'))->format('Y-m-d');
 
     $query = $pdo->prepare("SELECT growth_stage FROM trees WHERE user_id = :id");
@@ -168,6 +180,14 @@ function show_log() : void {
     $userID = $_POST["user_id"] ?? "";
     $date = $_POST["date"] ?? "";
 
+    if($userID == "" || $date == "") {
+        $response = [
+            'error' => "Invalid user_id or date!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $query = $pdo->prepare("
         SELECT mood, weather, temperature, tree_stage, daily_goal, goal_met FROM daily_logs 
                 WHERE user_id = :id 
@@ -202,6 +222,14 @@ function show_log() : void {
 function show_logs() : void {
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
+
+    if($userID == "") {
+        $response = [
+            'error' => "Invalid user_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
 
     $query = $pdo->prepare("
         SELECT log_date, mood, weather, temperature, tree_stage, daily_goal, goal_met FROM daily_logs 

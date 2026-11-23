@@ -56,7 +56,10 @@ switch ($method) {
     case "SHOW_SHOP" :
         show_shop();
     default :
-        echo "Error: No such method found! shop.php";
+            $response = [
+                'error' => "Invalid request",
+            ];
+            echo json_encode($response);
         exit;
 }
 
@@ -65,6 +68,14 @@ function buy() :void
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
     $itemID = $_POST["item_id"] ?? "";
+
+    if($userID == "" || $itemID == "") {
+        $response = [
+            'error' => "Invalid user_id or item_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
 
     //check if user already has decoration
     $query = $pdo->prepare("SELECT purchase_id FROM purchases WHERE user_id = :id AND item_id = :item_id");
@@ -80,6 +91,7 @@ function buy() :void
         echo json_encode($response);
         exit;
     }
+
     //check if tree is final stage
     $query = $pdo->prepare("SELECT growth_stage FROM trees WHERE user_id = :id");
     $query->execute([
@@ -155,6 +167,14 @@ function toggle() : void
     $userID = $_POST["user_id"] ?? "";
     $itemID = $_POST["item_id"] ?? "";
 
+    if($userID == "" || $itemID == "") {
+        $response = [
+            'error' => "Invalid user_id or item_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     //check if user already has decoration
     $query = $pdo->prepare("SELECT purchase_id FROM purchases WHERE user_id = :id AND item_id = :item_id");
     $query->execute([
@@ -191,6 +211,15 @@ function show_coins() : void
 {
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
+
+    if($userID == "") {
+        $response = [
+            'error' => "Invalid user_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $query = $pdo->prepare("SELECT coins FROM users WHERE user_id = :user_id");
     $query->execute([
         'user_id' => $userID
@@ -214,6 +243,15 @@ function show_streak() : void
 {
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
+
+    if($userID == "") {
+        $response = [
+            'error' => "Invalid user_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $query = $pdo->prepare("SELECT current_streak, last_streak_date FROM users WHERE user_id = :user_id");
     $query->execute([
         'user_id' => $userID
@@ -283,6 +321,15 @@ function show_shop() : void
 {
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
+
+    if($userID == "") {
+        $response = [
+            'error' => "Invalid user_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     //determine how many items in shop
     $query = $pdo->prepare("
     SELECT item_id, item_name
@@ -293,6 +340,8 @@ function show_shop() : void
     $query->execute();
 
     $items = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    $elements = [];
 
     foreach ($items as $item) {
         $itemID = $item['item_id'];

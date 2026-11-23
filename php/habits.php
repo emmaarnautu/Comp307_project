@@ -40,7 +40,11 @@ switch ($method) {
         habit_added();
         break;
     default :
-        echo json_encode(['error' => 'No such method found']);
+        $response = [
+            'error' => "Invalid request",
+        ];
+        echo json_encode($response);
+        exit;
 }
 
 
@@ -49,6 +53,14 @@ function show_habits() : void
     global $pdo;
     $userID = $_POST["user_id"] ?? "";
     $categoryShown = $_POST["habit_category"] ?? "";
+    if($userID == "" || $categoryShown == "") {
+        $response = [
+            'error' => "Invalid user_id or category!"
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $curDayOfWeek = date('w'); //stores current day of the week: sunday = 0, monday = 1...
 
     //send query: find all habits in category belonging to user that are active
@@ -98,6 +110,15 @@ function habit_done(): void
     //get POST vars + ensure habit belongs to user
     $userID = $_POST["user_id"] ?? "";
     $habitID = $_POST["habit_id"] ?? "";
+
+    if($userID == "" || $habitID == "") {
+        $response = [
+            'error' => "Invalid user_id or habit_id!"
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
     $needsUpdate = 0;
 
     //obtain info for sql
@@ -246,13 +267,10 @@ function habit_added(): void
         || $habitDays === ""
     ) {
 
-        http_response_code(400);
-
         echo json_encode([
-            'success' => false,
+            'status' => 0,
             'error' => 'Missing required parameters'
         ]);
-
         exit;
     }
 
