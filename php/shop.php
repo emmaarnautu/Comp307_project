@@ -18,6 +18,13 @@
  *           $response =
  *               'coins' => number of coins user has
  *
+ *   SHOW_STREAK:
+ *        Input parameters: "user_id"
+ *        Returns:
+ *            $response =
+ *                'streak' => streak number
+ *                'consumed' => 0|1 was a watering can consumed to save streak?
+ *
  *  SHOW_SHOP:
  *       Input parameters: "user_id"
  *       Returns:
@@ -43,6 +50,8 @@ switch ($method) {
     case "TOGGLE" :
         toggle();
     case "SHOW_COINS" :
+        show_coins();
+    case "SHOW_STREAK" :
         show_coins();
     case "SHOW_SHOP" :
         show_shop();
@@ -201,6 +210,74 @@ function show_coins() : void
     echo json_encode($response);
     exit;
 }
+function show_streak() : void
+{
+    global $pdo;
+    $userID = $_POST["user_id"] ?? "";
+    $query = $pdo->prepare("SELECT current_streak, last_streak_date FROM users WHERE user_id = :user_id");
+    $query->execute([
+        'user_id' => $userID
+    ]);
+
+    $streakInfo = $query->fetch();
+    if (!$streakInfo) {
+        echo json_encode([
+            'error' => 'User not found'
+        ]);
+        exit;
+    }
+
+    //check if last_streak_day is:
+    //  1.today/yesterday (last streak day is today/yesterday)
+    //  2.broken -> if so, check if watering can available and use!
+    $today = (new DateTime())->format('Y-m-d');
+    $yesterday = (new DateTime())->modify('-1 day')->format('Y-m-d');
+    if($streakInfo['last_streak_date'] != $today || $streakInfo['last_streak_date'] != $yesterday) {
+        //check if user has available watering can
+        $query = $pdo->prepare("SELECT purchase_id FROM purchases WHERE user_id = :user_id AND item_id = 4");
+        $query->execute([
+            'user_id' => $userID
+        ]);
+        $wateringCan = $query->fetchColumn();
+        if($wateringCan) {
+            $query = $pdo->prepare("DELETE FROM purchases WHERE purchase_id = :purchase_id");
+            $query->execute([
+                'purchase_id' => $wateringCan
+            ]);
+            $query = $pdo->prepare("
+            UPDATE users 
+            SET last_streak_date = :yesterday
+            WHERE user_id = :user_id");
+            $query->execute([
+                'user_id' => $userID,
+                'yesterday' => $yesterday
+            ]);
+            $response = [
+                'streak' => $streakInfo['current_streak'],
+                'consumed' => 1
+            ];
+            echo json_encode($response);
+            exit;
+        }
+        else {
+            $response = [
+                'streak' => 0,
+                'consumed' => 0
+            ];
+            echo json_encode($response);
+            exit;
+        }
+    }
+
+    $response = [
+        'streak' => $streakInfo['current_streak'],
+        'consumed' => 0
+    ];
+    echo json_encode($response);
+    exit;
+}
+
+
 
 function show_shop() : void
 {

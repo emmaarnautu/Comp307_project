@@ -34,8 +34,7 @@ $decorationArray = $query->fetchAll(PDO::FETCH_COLUMN);
 
 
 //return:
-$imageName = "/asset/" . $treeGrowth['growth_stage'] . ".png";
-
+$imageName = "/home/cs307-user/app/assets/" . $treeGrowth['growth_stage'] . ".png";
 
 $response = [
     'treepath' => $imageName,
