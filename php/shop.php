@@ -38,7 +38,17 @@
 
 //initialise db
 require_once "db.php";
+require_once "session.php";
 
+
+$temp = check_ticket($_POST['ticket'] ?? '');
+if ($temp === null) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Unauthorized']);
+    exit;
+}
+
+$_POST = array_merge($_POST, ['user_id' => $temp]);
 //method menu
 $method = '0';
 if (isset($_POST['functionName'])) {
@@ -331,7 +341,7 @@ function show_shop() : void
 
     //determine how many items in shop
     $query = $pdo->prepare("
-    SELECT item_id, item_name
+    SELECT item_id, item_name, price, image_path
     FROM shop_items
     ORDER BY item_id
 ");
@@ -374,6 +384,8 @@ function show_shop() : void
         $elements[] = [
             'item_id' => $itemID,
             'item_name' => $item_name['item_name'],
+            'price' => (int)$item['price'],
+            'image_path' => $item['image_path'],
             'is_bought' => $is_bought,
             'is_active' => $is_active
         ];
