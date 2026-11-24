@@ -1,4 +1,5 @@
 /* CSS Styling for Frontend */
+/* Default sizing is for mobile size */
 
 /* Styling that applies to everything */
 * {
@@ -9,7 +10,7 @@
 
 html, body {
     height: 100%;
-    background: #dcd8cf;
+    background: #dcd8cf; /* Light peach */
     color: #4a3a3a; /* Dusty brown */
     font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
 }
@@ -92,7 +93,7 @@ html, body {
     align-items: center;
     gap: 8px;
     padding: 6px 10px;
-    background: #efece5;
+    background: #efece5; /* Very light peach */
     border: 1px solid #00000014; /* Faint grey */
     border-radius: 12px;
     font-size: 14px;
@@ -204,6 +205,14 @@ html, body {
     font-size: 17px;
 }
 
+.shop-item img.price-coin {
+    width: 25px;
+    height: 25px;
+    max-width: 25px;
+    max-height: 25px;
+    object-fit: contain;
+}
+
 /* Bottom navigation bar */
 .navbar {
     flex: 0 0 auto;
@@ -222,6 +231,7 @@ html, body {
     border: none;
     cursor: pointer;
     color: #4a3a3a; /* Dusty brown */
+    text-decoration: none;
 }
 
 .nav-btn svg {
@@ -234,21 +244,115 @@ html, body {
     stroke-linejoin: round;
 }
 
+.nav-icon {
+    width: 32px;
+    height: 32px;
+    background-color: currentColor;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+}
+
 .nav-btn.active {
     background: #6b7f6a; /* Dark green */
-    color: #fff;
+    color: #ffffff; /* White */
 }
 
-.shop-item img.price-coin {
-    width: 25px;
-    height: 25px;
-    max-width: 25px;
-    max-height: 25px;
-    object-fit: contain;
-}
+/* Styling sizes for desktop */
+@media (min-width: 767px) {
+    /* New layout: Navigation bar on the left */
+    .app {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        grid-template-rows: auto 1fr;
+    }
 
-.app {
-    opacity: 0;
-    animation: fadeIn 0.4s ease forwards;
-    animation-delay: 0.8s;
+    .navbar {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        border-top: none;
+        border-right: 1px solid #00000014; /* Faint grey */
+        padding-bottom: 0;
+    }
+
+    .nav-btn {
+        height: 88px;
+    }
+
+    .nav-btn:not(.active):hover {
+        background: #00000014; /* Faint grey */
+    }
+
+    .nav-btn svg {
+        width: 38px;
+        height: 38px;
+    }
+
+    .nav-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .topbar {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 18px 40px;
+    }
+
+    .pages {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .logo {
+        height: 42px;
+    }
+
+    .nickname {
+        font-size: 22px;
+    }
+
+    .avatar {
+        width: 38px;
+        height: 38px;
+    }
+
+    #page-home.active {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 48px;
+        padding: 32px 48px 48px;
+    }
+
+    .weather {
+        top: 24px;
+        left: 48px;
+    }
+
+    .tree {
+        width: 100%;
+        max-width: 460px;
+    }
+
+    .tree-wrap {
+        padding: 40px 0 0;
+    }
+
+    .panel {
+        border-radius: 18px;
+        padding: 40px 32px 36px;
+        min-height: 0;
+    }
+
+    .shop {
+        gap: 28px;
+        padding: 0;
+    }
+
+    #page-tasks, #page-calendar, #page-settings {
+        padding: 40px 48px;
+    }
 }
