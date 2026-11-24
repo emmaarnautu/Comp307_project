@@ -151,19 +151,15 @@ function loadShop() {
 
 function createShopItem(item) {
     var shop = document.getElementById("shop");
-
     var card = document.createElement("button");
     card.className = "shop-item";
     card.type = "button";
     card.title = item.item_name;
-
     var image = document.createElement("div");
     image.className = "item-placeholder";
     card.appendChild(image);
-
     var bought = Number(item.is_bought) === 1;
     var active = Number(item.is_active) === 1;
-
     var price = document.createElement("div");
     price.className = "price";
 
@@ -172,11 +168,9 @@ function createShopItem(item) {
         coin.src = "../assets/icons/coinBlured.png";
         coin.className = "price-coin";
         coin.alt = "Coins";
-
         var amount = document.createElement("span");
         amount.className = "price-amount";
         amount.textContent = item.price;
-
         price.appendChild(coin);
         price.appendChild(amount);
 
@@ -198,11 +192,9 @@ function createShopItem(item) {
             toggleItem(item.item_id);
         }
     };
-
     if (bought && Number(item.item_id) === 4) {
         card.disabled = true;
     }
-
     shop.appendChild(card);
 }
 
