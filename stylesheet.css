@@ -138,7 +138,7 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 22px;
-    background: #f7f5f0; /* Very light grey */
+    background: #f7f5f0; /* Almost white */
     border: 1px solid #00000014; /* Faint grey */
     border-radius: 10px;
     padding: 14px 8px;
@@ -355,4 +355,46 @@ html, body {
     #page-tasks, #page-calendar, #page-settings {
         padding: 40px 48px;
     }
+}
+
+.shop-item {
+    width: 100%;
+    max-width: 170px;
+    justify-self: center;
+}
+
+.shop-item .price {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    height: 34px;
+    width: auto;
+    min-width: 34px;
+    padding: 0 10px 0 4px;
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f7f5f0; /* Almost white */
+}
+
+.shop-item .item-status {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.tree-wrap {
+    position: relative;
+}
+
+.decoration {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 78%;
+    max-width: 330px;
+    pointer-events: none;
 }
