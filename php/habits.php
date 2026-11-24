@@ -6,6 +6,7 @@
  *      Returns:
  *          $response =
  *              'need_to_update' => 0|1, change in coins, tree growth, streak, etc...
+ *              'habit_count' => habits done today by user (useful debugging)
  *
  *  HABIT_ADDED:
  *       Input parameters: "functionName", "user_id", "habit_days", "habit_name", "habit_category"
@@ -79,13 +80,12 @@ function show_habits() : void
     foreach ($habits as $habit) {
         //day here is 0100000 for a habit occurring only on Mondays
         $days = $habit['days'];
-        if (is_string($days)) {
-            $decodedDays = json_decode($days, true);
-            if (json_last_error() === JSON_ERROR_NONE) {
-                $days = $decodedDays;
-            }
+
+        if (strlen($days) !== 7) {
+            continue;
         }
-        if (($days[$curDayOfWeek] ?? 0) != 1) {
+
+        if ($days[$curDayOfWeek] !== '1') {
             continue;
         }
         $formattedHabits[] = [
@@ -129,7 +129,7 @@ function habit_done(): void
 
     //check if done already
     $today = (new DateTime('today'))->format('Y-m-d');
-    if ($habit['last_completion_date'] === $today) { //done today already, ignore
+    if ($habit['last_completion_date'] === $today) { //done today already, ignore, returns false if $habit[..] is null
         echo json_encode([
             'need_to_update' => 0
         ]);
@@ -157,11 +157,12 @@ function habit_done(): void
 
     //count habits done today, check if goal reached
     $query = $pdo->prepare("
-        SELECT SUM(CASE WHEN last_completion_date = :today THEN 1 ELSE 0 END) 
+        SELECT COUNT(*) 
             FROM habits 
-            WHERE user_id = :id
-            AND is_active = 1
-    ");
+        WHERE user_id = :id 
+            AND is_active = 1 
+            AND last_completion_date = :today
+");
 
     $query->execute([
         'today' => $today,
@@ -170,7 +171,7 @@ function habit_done(): void
 
     $habitCount = (int)$query->fetchColumn();
 
-    if ($habitCount == (int)$userData['daily_goal']) { //goal reached: add/reset streak, coin, tree + tree stage check + TODO: daily logs??
+    if ($habitCount >= (int)$userData['daily_goal'] && $userData['last_streak_date'] !== $today) { //goal reached: add/reset streak, coin, tree + tree stage check + TODO: daily logs??
         //daily goal reached: needs update
         $needsUpdate = 1;
         //check streak is continuous
@@ -196,16 +197,20 @@ function habit_done(): void
                 'today' => $today,
                 'id' => $userID, //
             ]);
-        } else { //streak broken, example, missed yesterdays goal
+        } else { //break streak and add 5 coins.
+            $newCoins = $userData['coins'] + 5;
             $query = $pdo->prepare("
                 UPDATE users 
                 SET current_streak = 1, 
-                    last_streak_date = :today
+                    last_streak_date = :today,
+                    coins = :coins
                 WHERE user_id = :id
             ");
             $query->execute([
                 'today' => $today,
-                'id' => $userID]);
+                'id' => $userID,
+                'coins' => $newCoins]);
+
         }
 
         //tree
@@ -243,8 +248,10 @@ function habit_done(): void
             $query->execute(['id' => $userID, 'nextPoints' => $nextPoints]);
         }
     }
+
     $response = [
-        'need_to_update' => $needsUpdate
+        'need_to_update' => $needsUpdate,
+        'habit_count' => $habitCount
     ];
     echo json_encode($response);
     exit;

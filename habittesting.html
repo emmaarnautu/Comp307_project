@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Habit Testing</title>
+</head>
+<body>
+
+<div id="output"></div>
+
+<!-- TREE TESTING -->
+
+<h2>Tree</h2>
+<form id="tree">
+    <input name="functionName" value="BUY" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <button type="Submit">Tree</button>
+</form>
+
+
+<h1>Habit Testing</h1>
+
+<!-- "functionName", "user_id", "habit_days", "habit_name", "habit_category" -->
+<h2>Create New Habit</h2>
+<form id="createHabit">
+    <input name="functionName" value="HABIT_ADDED" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <input name="habit_days" type="text">
+    <input name="habit_name" type="text">
+    <input name="habit_category" type="text">
+    <button type="Submit">Create Habit</button>
+</form>
+
+<!--Input parameters: "functionName", "user_id", "habit_category"-->
+<h2>Show New Habit</h2>
+<form id="showHabits">
+    <input name="functionName" value="SHOW_HABITS" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <input name="habit_category" value="All" type="hidden">
+    <button type="Submit">Show Habit</button>
+</form>
+
+<!-- "functionName", "user_id", "habit_id" -->
+<h2>Check Habit</h2>
+<form id="markHabit">
+    <input name="functionName" value="HABIT_DONE" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <input name="habit_id" type="text">
+    <button type="Submit">Mark Habit</button>
+</form>
+
+
+<!-- SHOP TESTING -->
+
+<!--  *      Input parameters: "user_id", "item_id"
+ *      Returns:
+ *          $response =
+ *              'status' => 0|1 (failed|succeeded)
+ *              'message' => "Item bought!" | "Error: Decoration already bought!","Error: Tree not in final stage!", "Error: Not enough coins!" -->
+<h2>Buy Decoration</h2>
+<form id="buyDeco">
+    <input name="functionName" value="BUY" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <input name="item_id" value="2" type="hidden">
+    <button type="Submit">Buy Lights</button>
+</form>
+
+<!-- Input parameters: "user_id", "item_id"
+ *       Returns:
+ *           $response =
+ *               'status' => 0|1, failed (item not owned) or succeeded -->
+
+<h2>Toggle Decoration</h2>
+<form id="toggleDeco">
+    <input name="functionName" value="TOGGLE" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <input name="item_id" value="2" type="hidden">
+    <button type="Submit">Toggle Lights</button>
+</form>
+
+<!--SHOW_COINS:
+ *       Input parameters: "user_id"
+ *       Returns:
+ *           $response =
+ *               'coins' => number of coins user has
+ -->
+
+<h2>Show coins</h2>
+<form id="showCoins">
+    <input name="functionName" value="SHOW_COINS" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <button type="Submit">Show Coins</button>
+</form>
+
+<!--
+ *   SHOW_STREAK:
+ *        Input parameters: "user_id"
+ *        Returns:
+ *            $response =
+ *                'streak' => streak number
+ *                'consumed' => 0|1 was a watering can consumed to save streak?
+  -->
+
+<h2>Show streak</h2>
+<form id="showStreak">
+    <input name="functionName" value="SHOW_STREAK" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <button type="Submit">Show Streak</button>
+</form>
+
+<!--
+
+ *  SHOW_SHOP:
+ *       Input parameters: "user_id"
+ *       Returns:
+ *           $response =
+ *               'elements' =>
+ *                     'item_id' =>
+ *                     'item_name' =>
+ *                     'is_bought' => 0|1
+ *                     'is_active' => 0|1 -->
+
+<h2>Show Shop</h2>
+<form id="showShop">
+    <input name="functionName" value="SHOW_SHOP" type="hidden">
+    <input name="user_id" value="2" type="hidden">
+    <button type="Submit">Show Shop</button>
+</form>
+
+<script>
+    document.getElementById("tree").onsubmit = async function(event) {
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/tree.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.treepath}</h3>
+    }
+    `;
+
+        if (result.decorations && result.decorations.length > 0) {
+            const decohtml = result.decorations.map(deco => `
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 8px;">
+                <strong>ID:</strong> ${deco} <br>
+            </div>
+        `).join('');
+
+            output.innerHTML = decohtml;
+        } else {
+            output.innerHTML = "<p>No decorations found.</p>";
+        }
+    }
+
+    document.getElementById("createHabit").onsubmit = async function(event) {
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/habits.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+    }
+    document.getElementById("showHabits").onsubmit = async function(event) {
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/habits.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        //COPIED -- REMOVE -- testing only
+        if (result.habits && result.habits.length > 0) {
+            const habitsHtml = result.habits.map(habit => `
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 8px;">
+                <strong>ID:</strong> ${habit.habit_id} <br>
+                <strong>Habit:</strong> ${habit.habit_name} <br>
+                <strong>Status:</strong> ${habit.is_done == 1 ? 'Done' : 'Not Done'}
+            </div>
+        `).join('');
+
+            output.innerHTML = habitsHtml;
+        } else {
+            output.innerHTML = "<p>No habits found.</p>";
+        }
+    }
+    document.getElementById("markHabit").onsubmit = async function(event) {
+        document.getElementById("output").innerHTML = `
+          <h3>CALLED</h3>
+    }
+    `;
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/habits.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.need_to_update}</h3>
+          <h3>${result.habit_count}</h3>
+    }
+    `;
+    }
+    //shop js
+
+    document.getElementById("buyDeco").onsubmit = async function(event) {
+        document.getElementById("output").innerHTML = `
+          <h3>CALLED</h3>
+    }
+    `;
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/shop.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.status}</h3>
+          <h3>${result.message}</h3>
+    }
+    `;
+
+    }
+
+    document.getElementById("toggleDeco").onsubmit = async function(event) {
+        document.getElementById("output").innerHTML = `
+          <h3>CALLED</h3>
+    }
+    `;
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/shop.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.status}</h3>
+    }
+    `;
+    }
+    document.getElementById("showCoins").onsubmit = async function(event) {
+        document.getElementById("output").innerHTML = `
+          <h3>CALLED</h3>
+    }
+    `;
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/shop.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.coins}</h3>
+    }
+    `;
+    }
+    document.getElementById("showStreak").onsubmit = async function(event) {
+        document.getElementById("output").innerHTML = `
+          <h3>CALLED</h3>
+    }
+    `;
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/shop.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+        document.getElementById("output").innerHTML = `
+          <h3>${result.streak}</h3>
+          <h3>${result.consumed}</h3>
+    }
+    `;
+    }
+
+
+
+
+    document.getElementById("showShop").onsubmit = async function(event) {
+        event.preventDefault();
+        const data = new FormData(this);
+        const response = await fetch("php/shop.php", {
+            method: "POST",
+            body: data
+        });
+        // Parse the JSON data from the response
+        const result = await response.json();
+
+        if (result.elements && result.elements.length > 0) {
+            const elementshtml = result.elements.map(element => `
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 8px;">
+                <strong>ID:</strong> ${element.item_id} <br>
+                <strong>Name:</strong> ${element.item_name} <br>
+                <strong>Bought?:</strong> ${element.is_bought == 1 ? 'Bought' : 'Not Bought'} <br>
+                <strong>Active?:</strong> ${element.is_active == 1 ? 'Active' : 'Not Active'}
+            </div>
+        `).join('');
+
+            output.innerHTML = elementshtml;
+        } else {
+            output.innerHTML = "<p>No shop items found!</p>";
+        }
+    }
+</script>
+
+</body>
+</html>

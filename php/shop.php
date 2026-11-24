@@ -270,7 +270,7 @@ function show_streak() : void
     //  2.broken -> if so, check if watering can available and use!
     $today = (new DateTime())->format('Y-m-d');
     $yesterday = (new DateTime())->modify('-1 day')->format('Y-m-d');
-    if($streakInfo['last_streak_date'] != $today || $streakInfo['last_streak_date'] != $yesterday) {
+    if($streakInfo['last_streak_date'] !== $today && $streakInfo['last_streak_date'] !== $yesterday) {
         //check if user has available watering can
         $query = $pdo->prepare("SELECT purchase_id FROM purchases WHERE user_id = :user_id AND item_id = 4");
         $query->execute([
@@ -306,7 +306,6 @@ function show_streak() : void
             exit;
         }
     }
-
     $response = [
         'streak' => $streakInfo['current_streak'],
         'consumed' => 0
