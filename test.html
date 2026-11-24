@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,15 +65,41 @@
     <button type="submit">Change Password</button>
 </form>
 
+<h2>Weather</h2>
+
+<button type="button" onclick="updateLocation()">
+    Update Browser Location
+</button>
+
+<button type="button" onclick="getWeather()">
+    Get Today's Weather
+</button>
+
+<p>Location status: <span id="locationDisplay">Not requested</span></p>
+
+<h3>Historical Weather</h3>
+<form id="weatherForm">
+    <input name="date" type="date" required>
+    <button type="submit">Get Weather by Date</button>
+</form>
+
 <h2>Response</h2>
 <pre id="output"></pre>
 
 <script>
-    // Get the HTML elements where we display responses and ticket status
+    // Get the HTML elements where we display responses,
+    // ticket status and location status
     const output = document.getElementById("output");
     const ticketDisplay = document.getElementById("ticketDisplay");
+    const locationDisplay = document.getElementById("locationDisplay");
 
-    // Gets first name, last name, username, email, and password from the form
+
+    // ========================================
+    // REGISTRATION
+    // ========================================
+
+    // Gets first name, last name, username, email and password
+    // from the registration form
     document.getElementById("registerForm").onsubmit = async function(event) {
         event.preventDefault();
 
@@ -86,9 +113,14 @@
 
         const result = await response.json();
 
-        //Show registration response
+        // Show registration response
         output.textContent = JSON.stringify(result, null, 2);
     };
+
+
+    // ========================================
+    // EMAIL VERIFICATION
+    // ========================================
 
     // Gets email and verification code from the form
     document.getElementById("verifyForm").onsubmit = async function(event) {
@@ -104,9 +136,10 @@
 
         const result = await response.json();
 
-        //Show verification response
+        // Show verification response
         output.textContent = JSON.stringify(result, null, 2);
     };
+
 
     // Gets email from the form
     document.getElementById("resendForm").onsubmit = async function(event) {
@@ -122,12 +155,18 @@
 
         const result = await response.json();
 
-        //Show resend response
+        // Show resend response
         output.textContent = JSON.stringify(result, null, 2);
     };
 
+
+    // ========================================
+    // LOGIN
+    // ========================================
+
     // Gets email and password from the form
-    // Receives a ticket if login is successful and saves it in localStorage
+    // Receives a ticket if login is successful
+    // Saves the ticket and requests browser location
     document.getElementById("loginForm").onsubmit = async function(event) {
         event.preventDefault();
 
@@ -141,7 +180,7 @@
 
         const result = await response.json();
 
-        //Show response without exposing ticket
+        // Show response without exposing ticket
         output.textContent = JSON.stringify({
             success: result.success,
             message: result.message
@@ -150,12 +189,20 @@
         if (result.success && result.ticket) {
             localStorage.setItem("ticket", result.ticket);
 
-            //Update ticket status
+            // Update ticket status
             showTicket();
+
+            // Request browser location after successful login
+            updateLocation();
         }
     };
 
-    // Gets email from the form - in case of logging in
+
+    // ========================================
+    // FORGOT PASSWORD
+    // ========================================
+
+    // Gets email from the form
     document.getElementById("forgotForm").onsubmit = async function(event) {
         event.preventDefault();
 
@@ -169,11 +216,16 @@
 
         const result = await response.json();
 
-        //Show forgot password response
+        // Show forgot password response
         output.textContent = JSON.stringify(result, null, 2);
     };
 
-    // Gets email, reset code, and new password from the form for reseting password
+
+    // ========================================
+    // RESET PASSWORD
+    // ========================================
+
+    // Gets email, reset code and new password from the form
     document.getElementById("resetForm").onsubmit = async function(event) {
         event.preventDefault();
 
@@ -187,16 +239,22 @@
 
         const result = await response.json();
 
-        //Show password reset response
+        // Show password reset response
         output.textContent = JSON.stringify(result, null, 2);
 
         if (result.success) {
             localStorage.removeItem("ticket");
 
-            //Update ticket status
+            // Update ticket and location status
             showTicket();
+            locationDisplay.textContent = "Not requested";
         }
     };
+
+
+    // ========================================
+    // CHANGE PASSWORD
+    // ========================================
 
     // Gets current password and new password from the form
     // Also gets the login ticket from localStorage
@@ -215,23 +273,28 @@
 
         const result = await response.json();
 
-        //Show password change response
+        // Show password change response
         output.textContent = JSON.stringify(result, null, 2);
 
         if (result.success) {
             localStorage.removeItem("ticket");
 
-            //Update ticket status
+            // Update ticket and location status
             showTicket();
+            locationDisplay.textContent = "Not requested";
         }
     };
+
+
+    // ========================================
+    // CHECK TICKET
+    // ========================================
 
     // Gets the saved ticket from localStorage
     async function checkTicket() {
         const ticket = localStorage.getItem("ticket");
 
         if (!ticket) {
-            //Show missing ticket message
             output.textContent = "No ticket stored";
             return;
         }
@@ -247,9 +310,14 @@
 
         const result = await response.json();
 
-        //Show ticket validation response
+        // Show ticket validation response
         output.textContent = JSON.stringify(result, null, 2);
     }
+
+
+    // ========================================
+    // LOGOUT
+    // ========================================
 
     // Gets the saved ticket from localStorage
     // Removes the local ticket after successful logout
@@ -257,7 +325,6 @@
         const ticket = localStorage.getItem("ticket");
 
         if (!ticket) {
-            // show missing ticket message
             output.textContent = "No ticket stored";
             return;
         }
@@ -273,18 +340,164 @@
 
         const result = await response.json();
 
-        //Show logout response
+        // Show logout response
         output.textContent = JSON.stringify(result, null, 2);
 
         if (result.success) {
             localStorage.removeItem("ticket");
 
-            //Update ticket status
+            // Update ticket and location status
             showTicket();
+            locationDisplay.textContent = "Not requested";
         }
     }
 
-    // Checks localStorage and displays "Stored" or "None" on the page
+
+    // ========================================
+    // UPDATE LOCATION
+    // ========================================
+
+    // Gets the user's location directly from the browser
+    // Sends latitude, longitude and ticket to weather.php
+    // Called automatically after successful login
+    function updateLocation() {
+        const ticket = localStorage.getItem("ticket");
+
+        if (!ticket) {
+            output.textContent = "No ticket stored";
+            return;
+        }
+
+        if (!navigator.geolocation) {
+            locationDisplay.textContent = "Geolocation not supported";
+            return;
+        }
+
+        locationDisplay.textContent = "Requesting location...";
+
+        navigator.geolocation.getCurrentPosition(
+
+            async function(position) {
+
+                // Ignore location if the user has logged out
+                // or switched accounts while waiting
+                if (localStorage.getItem("ticket") !== ticket) {
+                    return;
+                }
+
+                const data = new FormData();
+
+                data.append("action", "set_location");
+                data.append("ticket", ticket);
+                data.append("latitude", position.coords.latitude);
+                data.append("longitude", position.coords.longitude);
+
+                try {
+                    const response = await fetch("php/weather.php", {
+                        method: "POST",
+                        body: data
+                    });
+
+                    const result = await response.json();
+
+                    if (localStorage.getItem("ticket") !== ticket) {
+                        return;
+                    }
+
+                    // Show location and weather response
+                    output.textContent = JSON.stringify(result, null, 2);
+
+                    if (result.success) {
+                        locationDisplay.textContent = "Location saved";
+                    } else {
+                        locationDisplay.textContent = "Location update failed";
+                    }
+
+                } catch (error) {
+                    locationDisplay.textContent = "Request failed";
+                    output.textContent = error.message;
+                }
+            },
+
+            // Handles denied permission or unavailable location
+            function(error) {
+                if (localStorage.getItem("ticket") !== ticket) {
+                    return;
+                }
+
+                locationDisplay.textContent = error.message;
+            },
+
+            {
+                enableHighAccuracy: false,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+
+    // ========================================
+    // GET WEATHER
+    // ========================================
+
+    // Gets stored weather for today or a specified date
+    // Does not request browser location
+    async function getWeather(date = null) {
+        const ticket = localStorage.getItem("ticket");
+
+        if (!ticket) {
+            output.textContent = "No ticket stored";
+            return;
+        }
+
+        const data = new FormData();
+
+        data.append("action", "get_weather");
+        data.append("ticket", ticket);
+
+        // Include date only when historical weather is requested
+        if (date !== null) {
+            data.append("date", date);
+        }
+
+        try {
+            const response = await fetch("php/weather.php", {
+                method: "POST",
+                body: data
+            });
+
+            const result = await response.json();
+
+            // Show weather response
+            output.textContent = JSON.stringify(result, null, 2);
+
+        } catch (error) {
+            output.textContent = error.message;
+        }
+    }
+
+
+    // ========================================
+    // HISTORICAL WEATHER
+    // ========================================
+
+    // Gets the selected date from the historical weather form
+    document.getElementById("weatherForm").onsubmit = async function(event) {
+        event.preventDefault();
+
+        const data = new FormData(this);
+        const date = data.get("date");
+
+        await getWeather(date);
+    };
+
+
+    // ========================================
+    // TICKET STATUS
+    // ========================================
+
+    // Checks localStorage and displays "Stored" or "None"
     function showTicket() {
         if (localStorage.getItem("ticket")) {
             ticketDisplay.textContent = "Stored";
@@ -293,7 +506,7 @@
         }
     }
 
-    //Show ticket status when page loads
+    // Show ticket status when page loads
     showTicket();
 
 </script>

@@ -52,7 +52,7 @@ switch ($method) {
     case "SHOW_COINS" :
         show_coins();
     case "SHOW_STREAK" :
-        show_coins();
+        show_streak();
     case "SHOW_SHOP" :
         show_shop();
     default :

@@ -2,10 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Blossom</title>
+	<meta name="keywords" content="COMP307 project blossom app">
+	<meta name="description" content="COMP 307 Project: Blossom Homepage">
+    <title>Blossom - Home</title>
+	<link rel="stylesheet" href="stylesheet.css">
 </head>
+
 <body>
-    <!-- This is where Paige will write the html file for the home page (tree with
-         store when you scroll down -->
+  <div class="app">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
+      <div class="user">
+        <span id="nickname" class="nickname">@Nickname</span>
+        <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <main class="pages">
+
+      <!-- HOME -->
+      <section id="page-home" class="page active">
+	  
+		<!-- Show weather -->
+        <div class="weather" id="weather">
+          <img id="weather-icon" src="assets/weathers/Clear.png" alt="Weather">
+          <span id="weather-temp">17°C</span>
+        </div>
+
+		<!-- Show tree -->
+        <div class="tree-wrap">
+          <img id="tree" class="tree" src="assets/treestage1.png" alt="Your tree">
+        </div>
+
+		<!-- Show coins and streak -->
+        <div class="panel">
+          <div class="stats">
+            <div class="stat">
+              <img id="coin-icon" src="assets/icons/coinNoBlur.png" alt="Coins">
+              <span id="coins" class="stat-num">32</span>
+            </div>
+            <div class="stat">
+              <img id="flame-icon" src="assets/icons/Streak.png" alt="Streak">
+              <span id="streak" class="stat-num">4</span>
+            </div>
+          </div>
+
+			<!-- Show shop items -->
+          <div id="shop" class="shop"></div>
+        </div>
+      </section>
+
+      <!-- TASKS -->
+      <section id="page-tasks" class="page">
+        <h1>Tasks</h1>
+        <p>Tasks will go here</p>
+      </section>
+
+      <!-- CALENDAR -->
+      <section id="page-calendar" class="page">
+        <h1>Calendar</h1>
+        <p>Calendar will go here</p>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="page-settings" class="page">
+        <h1>Settings</h1>
+        <p>Settings will go here</p>
+      </section>
+
+    </main>
+
+    <!-- Bottom navigation bar -->
+    <nav class="navbar">
+      <button class="nav-btn active" data-page="home" aria-label="Home">
+        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 3l9 8.5"/><path d="M5.5 10v10.5h13V10"/><path d="M10 20.5v-6h4v6"/></svg>
+      </button>
+      <button class="nav-btn" data-page="tasks" aria-label="Tasks">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-7"/></svg>
+      </button>
+      <button class="nav-btn" data-page="calendar" aria-label="Calendar">
+        <svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 2.5v4M16 2.5v4"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01M16 16.5h.01"/></svg>
+      </button>
+      <button class="nav-btn" data-page="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h0a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5h0a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v0a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>
+      </button>
+    </nav>
+
+  </div>
+  <script src="js/dashboard.js"></script>
 </body>
 </html>
