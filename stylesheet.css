@@ -252,3 +252,64 @@ html, body {
     animation: fadeIn 0.4s ease forwards;
     animation-delay: 0.8s;
 }
+
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#shop {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#shop .shop-item {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    height: 120px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#shop .shop-item .item-image {
+    width: 80px;
+    height: 80px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    margin: auto;
+}
+
+.tree-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+#tree {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.tree-wrap .decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 2;
+}
