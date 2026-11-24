@@ -12,13 +12,18 @@
 <body>
     <div class="app">
 
-    <!-- Top bar -->
-    <header class="topbar">
+    <!-- Header with Blossom logo and nickname/avatar -->
+    <header class="header">
+
+        <!-- Blossom logo -->
         <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
+
+        <!-- Nickname and avatar -->
         <div class="user">
             <span id="nickname" class="nickname">@Nickname</span>
             <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
         </div>
+
     </header>
 
     <!-- Pages -->
@@ -27,39 +32,45 @@
         <!-- HOME -->
         <section id="page-home" class="page active">
 
-		    <!-- Show weather -->
+		    <!-- Weather -->
             <div class="weather" id="weather">
                 <img id="weather-icon" src="assets/weathers/Clear.png" alt="Weather">
                 <span id="weather-temp">17°C</span>
             </div>
 
-		    <!-- Show tree -->
+		    <!-- Tree -->
             <div class="tree-wrap">
                 <img id="tree" class="tree" src="assets/treestage7.png" alt="Tree">
             </div>
 
-		    <!-- Show coins and streak -->
+		    <!-- Panel for coins and streak -->
             <div class="panel">
                 <div class="stats">
+
+                    <!-- Coins -->
                     <div class="stat">
                         <img id="coin-icon" src="assets/icons/coinNoBlur.png" alt="Coins">
                         <span id="coins" class="stat-num">32</span>
                     </div>
+
+                    <!-- Streak -->
                     <div class="stat">
-                        <img id="flower-icon" src="assets/icons/Streak.png" alt="Streak">
+                        <img id="flower-icon" src="assets/icons/happy-streak.png" alt="Streak">
                         <span id="streak" class="stat-num">4</span>
                     </div>
+
                 </div>
 
-			    <!-- Show shop items -->
+			    <!-- Shop items -->
                 <div id="shop" class="shop"></div>
+
             </div>
         </section>
 
-        <!-- TASKS -->
-        <section id="page-tasks" class="page">
-            <h1>Tasks</h1>
-            <p>Tasks will go here</p>
+        <!-- HABITS -->
+        <section id="page-habits" class="page">
+            <h1>Habits</h1>
+            <p>Habits will go here</p>
         </section>
 
         <!-- CALENDAR -->
@@ -78,23 +89,32 @@
 
     <!-- Bottom navigation bar -->
     <nav class="navbar">
+
+        <!-- Home button -->
         <a class="nav-btn active" href="index.html" aria-label="Home">
             <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
         </a>
-        <a class="nav-btn" href="habits.html" aria-label="Tasks">
+
+        <!-- Habits button -->
+        <a class="nav-btn" href="habits.html" aria-label="Habits">
             <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
         </a>
+
+        <!-- Calendar button -->
         <a class="nav-btn" href="calendar.html" aria-label="Calendar">
             <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
         </a>
+
+        <!-- Settings button -->
         <a class="nav-btn" href="settings.html" aria-label="Settings">
             <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
         </a>
+
     </nav>
 
     </div>
 
-    <script src="js/dashboard.js"></script>
+    <!--<script src="js/dashboard.js"></script>-->
 
 </body>
 </html>

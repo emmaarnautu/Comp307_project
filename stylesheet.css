@@ -25,8 +25,8 @@ html, body {
     overflow: hidden;
 }
 
-/* Top bar */
-.topbar {
+/* Header */
+.header {
     flex: 0 0 auto;
     display: flex;
     align-items: center;
@@ -76,7 +76,7 @@ html, body {
     display: block;
 }
 
-#page-tasks, #page-calendar, #page-settings {
+#page-habits, #page-calendar, #page-settings {
     padding: 24px 20px;
 }
 
@@ -295,7 +295,7 @@ html, body {
         height: 36px;
     }
 
-    .topbar {
+    .header {
         grid-column: 2;
         grid-row: 1;
         padding: 18px 40px;
@@ -352,7 +352,7 @@ html, body {
         padding: 0;
     }
 
-    #page-tasks, #page-calendar, #page-settings {
+    #page-habits, #page-calendar, #page-settings {
         padding: 40px 48px;
     }
 }
