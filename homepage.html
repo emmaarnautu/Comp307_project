@@ -25,7 +25,7 @@
 
       <!-- HOME -->
       <section id="page-home" class="page active">
-	  
+
 		<!-- Show weather -->
         <div class="weather" id="weather">
           <img id="weather-icon" src="assets/weathers/Clear.png" alt="Weather">
@@ -77,18 +77,18 @@
 
     <!-- Bottom navigation bar -->
     <nav class="navbar">
-      <button class="nav-btn active" data-page="home" aria-label="Home">
-        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 3l9 8.5"/><path d="M5.5 10v10.5h13V10"/><path d="M10 20.5v-6h4v6"/></svg>
-      </button>
-      <button class="nav-btn" data-page="tasks" aria-label="Tasks">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.5 3 3 6-7"/></svg>
-      </button>
-      <button class="nav-btn" data-page="calendar" aria-label="Calendar">
-        <svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="16" rx="2"/><path d="M3.5 9.5h17M8 2.5v4M16 2.5v4"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01M16 16.5h.01"/></svg>
-      </button>
-      <button class="nav-btn" data-page="settings" aria-label="Settings">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h0a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5h0a1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v0a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>
-      </button>
+      <a class="nav-btn active" href="index.html" aria-label="Home">
+        <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
+      </a>
+      <a class="nav-btn" href="tasks.html" aria-label="Tasks">
+        <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
+      </a>
+      <a class="nav-btn" href="calendar.html" aria-label="Calendar">
+        <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
+      </a>
+      <a class="nav-btn" href="settings.html" aria-label="Settings">
+        <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
+      </a>
     </nav>
 
   </div>
