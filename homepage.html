@@ -10,89 +10,91 @@
 </head>
 
 <body>
-  <div class="app">
+    <div class="app">
 
     <!-- Top bar -->
     <header class="topbar">
-      <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
-      <div class="user">
-        <span id="nickname" class="nickname">@Nickname</span>
-        <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
-      </div>
+        <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
+        <div class="user">
+            <span id="nickname" class="nickname">@Nickname</span>
+            <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
+        </div>
     </header>
 
     <!-- Pages -->
     <main class="pages">
 
-      <!-- HOME -->
-      <section id="page-home" class="page active">
+        <!-- HOME -->
+        <section id="page-home" class="page active">
 
-		<!-- Show weather -->
-        <div class="weather" id="weather">
-          <img id="weather-icon" src="assets/weathers/Clear.png" alt="Weather">
-          <span id="weather-temp">17°C</span>
-        </div>
-
-		<!-- Show tree -->
-        <div class="tree-wrap">
-          <img id="tree" class="tree" src="assets/treestage1.png" alt="Your tree">
-        </div>
-
-		<!-- Show coins and streak -->
-        <div class="panel">
-          <div class="stats">
-            <div class="stat">
-              <img id="coin-icon" src="assets/icons/coinNoBlur.png" alt="Coins">
-              <span id="coins" class="stat-num">32</span>
+		    <!-- Show weather -->
+            <div class="weather" id="weather">
+                <img id="weather-icon" src="assets/weathers/Clear.png" alt="Weather">
+                <span id="weather-temp">17°C</span>
             </div>
-            <div class="stat">
-              <img id="flame-icon" src="assets/icons/Streak.png" alt="Streak">
-              <span id="streak" class="stat-num">4</span>
+
+		    <!-- Show tree -->
+            <div class="tree-wrap">
+                <img id="tree" class="tree" src="assets/treestage1.png" alt="Your tree">
             </div>
-          </div>
 
-			<!-- Show shop items -->
-          <div id="shop" class="shop"></div>
-        </div>
-      </section>
+		    <!-- Show coins and streak -->
+            <div class="panel">
+                <div class="stats">
+                    <div class="stat">
+                        <img id="coin-icon" src="assets/icons/coinNoBlur.png" alt="Coins">
+                        <span id="coins" class="stat-num">32</span>
+                    </div>
+                    <div class="stat">
+                        <img id="flame-icon" src="assets/icons/Streak.png" alt="Streak">
+                        <span id="streak" class="stat-num">4</span>
+                    </div>
+                </div>
 
-      <!-- TASKS -->
-      <section id="page-tasks" class="page">
-        <h1>Tasks</h1>
-        <p>Tasks will go here</p>
-      </section>
+			    <!-- Show shop items -->
+                <div id="shop" class="shop"></div>
+            </div>
+        </section>
 
-      <!-- CALENDAR -->
-      <section id="page-calendar" class="page">
-        <h1>Calendar</h1>
-        <p>Calendar will go here</p>
-      </section>
+        <!-- TASKS -->
+        <section id="page-tasks" class="page">
+            <h1>Tasks</h1>
+            <p>Tasks will go here</p>
+        </section>
 
-      <!-- SETTINGS -->
-      <section id="page-settings" class="page">
-        <h1>Settings</h1>
-        <p>Settings will go here</p>
-      </section>
+        <!-- CALENDAR -->
+        <section id="page-calendar" class="page">
+            <h1>Calendar</h1>
+            <p>Calendar will go here</p>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="page-settings" class="page">
+            <h1>Settings</h1>
+            <p>Settings will go here</p>
+        </section>
 
     </main>
 
     <!-- Bottom navigation bar -->
     <nav class="navbar">
-      <a class="nav-btn active" href="index.html" aria-label="Home">
-        <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
-      </a>
-      <a class="nav-btn" href="habits.html" aria-label="Tasks">
-        <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
-      </a>
-      <a class="nav-btn" href="calendar.html" aria-label="Calendar">
-        <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
-      </a>
-      <a class="nav-btn" href="settings.html" aria-label="Settings">
-        <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
-      </a>
+        <a class="nav-btn active" href="index.html" aria-label="Home">
+            <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
+        </a>
+        <a class="nav-btn" href="habits.html" aria-label="Tasks">
+            <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
+        </a>
+        <a class="nav-btn" href="calendar.html" aria-label="Calendar">
+            <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
+        </a>
+        <a class="nav-btn" href="settings.html" aria-label="Settings">
+            <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
+        </a>
     </nav>
 
-  </div>
-  <script src="js/dashboard.js"></script>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+
 </body>
 </html>
