@@ -19,9 +19,7 @@ html, body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 430px;
     height: 100dvh;
-    margin: 0 auto;
     background: #f7f5f0; /* Almost white */
     overflow: hidden;
 }
