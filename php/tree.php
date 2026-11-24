@@ -1,36 +1,63 @@
 <?php
-//call on load using POST, echoes full tree's image: (base tree) + (decorations). Here assuming front end takes care of background/weather API call.
+/**
+ * Input parameters: user_id
+ * Returns:
+ * $response =
+ *      'treepath' => image path for tree from asset
+ *      'decorations' => array containing all image paths for decorations
+ */
 
 //initialise db
 require_once "db.php";
 global $pdo;
 
-//get userID !assumes in URL "id=?"
 $userID = $_POST["user_id"] ?? "";
 
-//send query: treeGrowth: 0-growth_stage
-$query = $pdo->prepare("SELECT growth_stage FROM trees WHERE user_id = :id");
-$query->execute(['id' => $userID]);
-$treeGrowth = $query->fetch();
-
-//send query find all active decorations_ids
-$query = $pdo->prepare("SELECT decoration_id FROM tree_decorations WHERE user_id = :id");
-$query->execute(['id' => $userID]);
-$decorationIDs = $query->fetchAll();
-
-
-//returned html: 
-echo '<html>';
-$imageName = "treestage" . $treeGrowth . ".png";
-echo '<img src="' . $imageName . '">';
-
-foreach($decorationIDs as $decorationID) {
-    //find image_path from decorationID. Assumes decoration-id = item-id.
-    $query = $pdo->prepare("SELECT image_path FROM shop_items WHERE item_id = :id");
-    $query->execute(['id' => $decorationID]);
-    $imagePath = $query->fetch();
-    echo '<img src="' . $imagePath . '">';
+if($userID == "") {
+    $response = [
+        'error' => "Invalid user ID",
+    ];
+    echo json_encode($response);
+    exit;
 }
 
-echo '</html>';
+$query = $pdo->prepare("SELECT growth_stage FROM trees WHERE user_id = :id");
+$query->execute(['id' => $userID]);
+$treeGrowth = $query->fetchColumn();
+
+//if user doesn't have a tree, initialise tree
+if(!$treeGrowth) {
+    $query = $pdo->prepare("INSERT INTO trees (user_id, growth_points, growth_stage, last_growth_date) VALUES (:user_id,0,1,:today)");
+    $query->execute([
+        'user_id' => $userID,
+        'today' => date("Y-m-d")
+    ]);
+    $treeGrowth = 1;
+}
+
+//send query find all active decorations_ids
+$query = $pdo->prepare(
+    "SELECT si.image_path
+FROM tree_decorations td
+JOIN purchases p ON td.purchase_id = p.purchase_id
+JOIN shop_items si ON p.item_id = si.item_id
+WHERE td.user_id = :id
+  AND td.is_active = 1
+  AND si.item_type = 'Decoration'"
+);
+
+$query->execute(['id' => $userID]);
+$decorationArray = $query->fetchAll(PDO::FETCH_COLUMN);
+
+
+//return:
+$imageName = "/home/cs307-user/app/assets/treestage" . $treeGrowth . ".png";
+
+$response = [
+    'treepath' => $imageName,
+    'decorations' => $decorationArray
+];
+echo json_encode($response);
+exit;
+
 ?>

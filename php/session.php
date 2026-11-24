@@ -1,67 +1,55 @@
 <?php
 require_once "db.php";
 
-// Creates a new ticket for a user after successful login
+/**
+ * Creates a new authentication ticket after login
+ * @param int $userId The ID of the logged-in user
+ * @return string The generated ticket
+ * @post A hashed ticket is stored in the database with a 7-day expiration
+ */
 function create_ticket($userId) {
     global $pdo;
-
     $ticket = bin2hex(random_bytes(32));
     $ticketHash = hash('sha256', $ticket);
-
-    $stmt = $pdo->prepare("
-        INSERT INTO tickets (user_id, ticket_code, expires_at)
-        VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY))
-    ");
-
+    $stmt = $pdo->prepare("INSERT INTO tickets (user_id, ticket_code, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 7 DAY))");
     $stmt->execute([$userId, $ticketHash]);
-
-    // Return the original ticket to the user
     return $ticket;
 }
 
-// Checks if a ticket exists and has not expired
-// Returns the user ID if valid, or null otherwise
+/**
+ * Checks whether a ticket exists and has not expired
+ * @param string $ticket The ticket to check
+ * @return int|null The user ID if valid, or null otherwise
+ * @post Expired tickets are deleted from the database
+ */
 function check_ticket(string $ticket): ?int {
     global $pdo;
-
     $pdo->exec("DELETE FROM tickets WHERE expires_at <= NOW()");
-
     $ticketHash = hash('sha256', $ticket);
-
-    $stmt = $pdo->prepare("
-        SELECT user_id
-        FROM tickets
-        WHERE ticket_code = ?
-    ");
+    $stmt = $pdo->prepare("SELECT user_id FROM tickets WHERE ticket_code = ?");
     $stmt->execute([$ticketHash]);
-
     $userId = $stmt->fetchColumn();
-
     return $userId === false ? null : (int) $userId;
 }
 
-// Deletes a ticket when the user logs out
-// Returns true if a ticket was deleted, false otherwise
+/**
+ * Deletes an authentication ticket when the user logs out
+ * @param string $ticket The ticket to delete
+ * @return bool True if a ticket was deleted, false otherwise
+ * @post The matching ticket is removed from the database if it exists
+ */
 function delete_ticket(string $ticket): bool {
     global $pdo;
-
     $ticketHash = hash('sha256', $ticket);
-
-    $stmt = $pdo->prepare("
-        DELETE FROM tickets
-        WHERE ticket_code = ?
-    ");
+    $stmt = $pdo->prepare("DELETE FROM tickets WHERE ticket_code = ?");
     $stmt->execute([$ticketHash]);
-
     return $stmt->rowCount() > 0;
 }
 
-// Run this code only when session.php is called directly,
-// not when another PHP file imports it
+// Run this code only when session.php is called directly
 if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
     header('Content-Type: application/json');
 
-    // Only allow POST requests
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         http_response_code(405);
         echo json_encode(['error' => 'Use POST']);
@@ -83,7 +71,6 @@ if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') === __FILE__) {
                 'user_id' => $userId
             ]);
         }
-
     } elseif ($action == 'logout') {
         $deleted = delete_ticket($ticket);
         echo json_encode(['success' => $deleted]);
