@@ -1,8 +1,10 @@
 {
+    "require": {
+        "phpmailer/phpmailer": "^7.2",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*"
+    },
     "require-dev": {
         "phpunit/phpunit": "*"
-    },
-    "require": {
-        "phpmailer/phpmailer": "^7.2"
     }
 }

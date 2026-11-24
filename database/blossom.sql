@@ -150,8 +150,6 @@ CREATE TABLE `tree_decorations` (
 
 --
 -- Table structure for table `users`
---
-
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
@@ -164,8 +162,12 @@ CREATE TABLE `users` (
   `current_streak` int(11) NOT NULL DEFAULT 0,
   `longest_streak` int(11) NOT NULL DEFAULT 0,
   `last_streak_date` date DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT current_timestamp()
-) ;
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
+  `latitude` decimal(9,6) DEFAULT NULL,
+  `longitude` decimal(9,6) DEFAULT NULL,
+  `timezone` varchar(64) DEFAULT NULL
+);
 
 --
 -- Indexes for dumped tables
