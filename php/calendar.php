@@ -44,6 +44,11 @@
 //initialise db
 require_once "db.php";
 
+//automatic setup
+if (PHP_SAPI === 'cli') {
+    store_log();
+}
+
 //method menu
 $method = '0';
 if (isset($_POST['functionName'])) {
