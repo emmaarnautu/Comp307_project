@@ -63,6 +63,9 @@ function checkSession() {
 }
 
 function relativePath(path) {
+    if (!path) {
+        return "";
+    }
     return path.replace("/home/cs307-user/app/", "");
 }
 
@@ -79,16 +82,15 @@ function loadTree() {
     request(TREE_URL, "user_id=" + userId, function(data) {
         var tree = document.getElementById("tree");
         tree.src = relativePath(data.treepath);
-        var treeWrap = document.getElementsByClassName("tree-wrap");
+        var treeWrap = document.getElementsByClassName("tree-layers")[0];
         var decorations = treeWrap.getElementsByClassName("decoration");
-        for (var i = 0; i < decorations.length; i++) {
-            decorations[i].remove();
+        while (decorations.length > 0) {
+            decorations[0].remove();
         }
         for (var i = 0; i < data.decorations.length; i++) {
             var image = document.createElement("img");
             image.src = relativePath(data.decorations[i]);
             image.className = "decoration";
-            image.alt = "Tree decoration";
             treeWrap.appendChild(image);
         }
     });
@@ -138,10 +140,8 @@ function displayWeather(weather) {
 }
 
 function loadShop() {
-    var params = "functionName=SHOW_SHOP&user_id=" + userId;
-    request(SHOP_URL, params, function(data) {
+    request(SHOP_URL, "functionName=SHOW_SHOP", function(data) {
         var shop = document.getElementById("shop");
-        // Clear previous shop items
         shop.innerHTML = "";
         for (var i = 0; i < data.elements.length; i++) {
             createShopItem(data.elements[i]);
@@ -154,18 +154,19 @@ function createShopItem(item) {
     var card = document.createElement("button");
     card.className = "shop-item";
     card.type = "button";
-    card.title = item.item_name;
-    var image = document.createElement("div");
-    image.className = "item-placeholder";
+    var image = document.createElement("img");
+    image.src = relativePath(item.image_path).replace("assets/", "assets/icons/").replace(".png", "-icon.png");
+
+    image.className = "item-image";
+    image.alt = item.item_name;
     card.appendChild(image);
     var bought = Number(item.is_bought) === 1;
     var active = Number(item.is_active) === 1;
-    var price = document.createElement("div");
-    price.className = "price";
-
     if (!bought) {
+        var price = document.createElement("div");
+        price.className = "price";
         var coin = document.createElement("img");
-        coin.src = "../assets/icons/coinBlured.png";
+        coin.src = "assets/icons/coinBlured.png";
         coin.className = "price-coin";
         coin.alt = "Coins";
         var amount = document.createElement("span");
@@ -173,18 +174,11 @@ function createShopItem(item) {
         amount.textContent = item.price;
         price.appendChild(coin);
         price.appendChild(amount);
-
-    } else {
-        price.className = "item-status";
-        price.textContent = active ? "Equipped" : "Owned";
+        card.appendChild(price);
     }
-
-    card.appendChild(price);
-
     if (active) {
         card.classList.add("equipped");
     }
-
     card.onclick = function() {
         if (!bought) {
             buyItem(item.item_id);
@@ -194,12 +188,15 @@ function createShopItem(item) {
     };
     if (bought && Number(item.item_id) === 4) {
         card.disabled = true;
+        card.classList.add("equipped");
     }
     shop.appendChild(card);
 }
 
 function buyItem(itemId) {
-    var params = "functionName=BUY" + "&user_id=" + userId + "&item_id=" + itemId;
+    var params = "functionName=BUY" +
+        "&item_id=" + encodeURIComponent(itemId);
+
     request(SHOP_URL, params, function(data) {
         if (Number(data.status) === 1) {
             loadCoins();
@@ -212,7 +209,9 @@ function buyItem(itemId) {
 }
 
 function toggleItem(itemId) {
-    var params = "functionName=TOGGLE" + "&user_id=" + userId + "&item_id=" + itemId;
+    var params = "functionName=TOGGLE" +
+        "&item_id=" + encodeURIComponent(itemId);
+
     request(SHOP_URL, params, function(data) {
         if (Number(data.status) === 1) {
             loadTree();

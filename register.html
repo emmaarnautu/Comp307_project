@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blossom</title>
+</head>
+<body>
+    <h2>Register</h2>
+    <form id="registerForm">
+        <input type="text" id="firstName" placeholder="First name" required>
+        <input type="text" id="lastName" placeholder="Last name" required>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" minlength="8" required>
+        <button type="submit">Register</button>
+    </form>
+    <form id="verifyForm" hidden>
+        <h3>Verify your email</h3>
+        <input type="text" id="code" placeholder="Verification code" maxlength="6" required>
+        <button type="submit">Verify</button>
+    </form>
+    <p id="message"></p>
+    <script src="js/register.js"></script>
+</body>
+</html>
