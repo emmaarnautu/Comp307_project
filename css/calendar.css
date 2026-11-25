@@ -132,6 +132,15 @@
     background: #fff;
 }
 
+#page-calendar .cal-mood-icon {
+    position: absolute;
+    left: 50%;
+    bottom: 4px;
+    transform: translateX(-50%);
+    width: 25%;
+    max-width: 24px;
+}
+
 /* Side Panel */
 .cal-side {
     display: flex;
@@ -210,4 +219,9 @@
 .mood-btn.selected {
     opacity: 1;
     box-shadow: 0 0 0 3px var(--cal-green);
+}
+
+.mood-btn:disabled {
+    opacity: 035;
+    cursor: not-allowed;
 }
