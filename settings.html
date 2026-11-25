@@ -2,9 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="keywords" content="COMP307 project blossom app">
+    <meta name="description" content="COMP 307 Project: Blossom Settings">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Blossom - Settings</title>
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
+
 <body>
+    <div class="app">
+
+    <!-- Header with Blossom logo and nickname/avatar -->
+    <header class="header">
+
+        <!-- Blossom logo -->
+        <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
+
+        <!-- Nickname and avatar -->
+        <div class="user">
+            <span id="nickname" class="nickname">@Nickname</span>
+            <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
+        </div>
+
+    </header>
+
+    <!-- Pages -->
+    <main class="pages">
+
+        <!-- SETTINGS -->
+        <section id="page-settings" class="page active">
+
+            <!-- Title -->
+            <h1 class="settings-title">Settings</h1>
+
+        </section>
+
+    </main>
+
+    <!-- Bottom navigation bar -->
+    <nav class="navbar">
+
+        <!-- Home button -->
+        <a class="nav-btn active" href="index.html" aria-label="Home">
+            <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+
+        <!-- Habits button -->
+        <a class="nav-btn" href="habits.html" aria-label="Habits">
+            <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
+            <span class="nav-label">Habits</span>
+        </a>
+
+        <!-- Calendar button -->
+        <a class="nav-btn" href="calendar.html" aria-label="Calendar">
+            <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
+            <span class="nav-label">Calendar</span>
+        </a>
+
+        <!-- Settings button -->
+        <a class="nav-btn" href="settings.html" aria-label="Settings">
+            <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
+            <span class="nav-label">Settings</span>
+        </a>
+
+    </nav>
+
+    </div>
+
+    <script src="js/settings.js"></script>
 
 </body>
 </html>
