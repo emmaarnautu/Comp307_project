@@ -8,6 +8,7 @@
     padding: 0;
 }
 
+/* Make the page full height, set default colours and fonts */
 html, body {
     height: 100%;
     background: #dcd8cf; /* Light peach */
@@ -15,6 +16,7 @@ html, body {
     font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
 }
 
+/* Full height container */
 .app {
     position: relative;
     display: flex;
@@ -25,7 +27,7 @@ html, body {
     overflow: hidden;
 }
 
-/* Header */
+/* Header: Top bar with logo and nickname/avatar */
 .header {
     flex: 0 0 auto;
     display: flex;
@@ -35,23 +37,26 @@ html, body {
     border-bottom: 1px solid #00000014; /* Faint grey */
 }
 
+/* Blossom logo */
 .logo {
     height: 34px;
     width: auto;
 }
 
+/* Nickname and avatar */
 .user {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
+/* Nickname */
 .nickname {
     font-size: 20px;
     font-weight: 700;
 }
 
-/* Style the avatar (shadow man pfp) */
+/* Avatar (shadow man pfp) */
 .avatar {
     width: 30px;
     height: 30px;
@@ -60,13 +65,14 @@ html, body {
     background: #4a3a3a; /* Dusty brown */
 }
 
-/* Pages */
+/* Pages: Center parts, main website pages */
 .pages {
     flex: 1 1 auto;
     overflow-y: auto;
     position: relative;
 }
 
+/* Pages are hidden unless they have the active class */
 .page {
     display: none;
     min-height: 100%;
@@ -76,15 +82,19 @@ html, body {
     display: block;
 }
 
+/* Padding for three starting-hidden pages */
 #page-habits, #page-calendar, #page-settings {
     padding: 24px 20px;
 }
 
+/* Space under page title */
 .page h1 {
     margin-bottom: 8px;
 }
 
-/* Home */
+/* Home page */
+
+/* Weather */
 .weather {
     position: absolute;
     top: 16px;
@@ -100,18 +110,14 @@ html, body {
     z-index: 2;
 }
 
+/* Weather icon */
 .weather img {
     width: 28px;
     height: 28px;
     object-fit: contain;
 }
 
-.tree-wrap {
-    display: flex;
-    justify-content: center;
-    padding: 60px 20px 24px;
-}
-
+/* Picture of the tree */
 .tree {
     width: 78%;
     max-width: 330px;
@@ -119,6 +125,25 @@ html, body {
     display: block;
 }
 
+/* Box with tree in the center */
+.tree-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px 24px;
+    position: relative;
+}
+
+/* Decorations on the tree */
+.decoration {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 78%;
+    max-width: 330px;
+    pointer-events: none;
+}
+
+/* Green panel under tree for stats and shop */
 .panel {
     background: #e3e6da; /* Very light greenish grey */
     border: 1px solid #00000014; /* Faint grey */
@@ -127,12 +152,14 @@ html, body {
     min-height: 300px;
 }
 
+/* Stats: Coins and daily streak */
 .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
 }
 
+/* Place for each stat */
 .stat {
     display: flex;
     align-items: center;
@@ -144,12 +171,14 @@ html, body {
     padding: 14px 8px;
 }
 
+/* Icon size for the stat icons */
 .stat img {
     width: 48px;
     height: 48px;
     object-fit: contain;
 }
 
+/* Stat number for each stat */
 .stat-num {
     font-size: 40px;
     font-weight: 300;
@@ -158,7 +187,7 @@ html, body {
     text-align: center;
 }
 
-/* Shop */
+/* Shop: Two columns for shop items */
 .shop {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -167,6 +196,7 @@ html, body {
     padding: 0 10px;
 }
 
+/* Each shop item button */
 .shop-item {
     position: relative;
     aspect-ratio: 1.05 / 1;
@@ -177,13 +207,15 @@ html, body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.12s ease, filter 0.12s ease;
+    transition: transform 0.12s ease;
+    width: 100%;
+    max-width: 170px;
+    justify-self: center;
+    font: inherit;
+    color: inherit;
 }
 
-.shop-item:active {
-    transform: scale(0.96);
-}
-
+/* Shop item icons */
 .shop-item img.item-img {
     width: 75%;
     height: 75%;
@@ -191,20 +223,40 @@ html, body {
     pointer-events: none;
 }
 
+/* Shop items prices */
 .shop-item .price {
     position: absolute;
     left: 6px;
     bottom: 6px;
     width: 34px;
     height: 34px;
-    border-radius: 50%;
-    display: grid;
+    border-radius: 17px;
+    display: flex;
     place-items: center;
     color: #4a3a3a; /* Dusty brown */
     font-weight: 800;
     font-size: 17px;
+    padding: 0 10px 0 4px;
+    align-items: center;
+    gap: 4px;
+    background: #f7f5f0; /* Almost white */
 }
 
+/* Label for status of each item */
+.shop-item .item-status {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+/* Equipped shop items */
+.shop-item.equipped {
+    border: 2px solid #6b7f6a; /* Dark green */
+}
+
+/* Coin icon for each shop item's price */
 .shop-item img.price-coin {
     width: 25px;
     height: 25px;
@@ -213,7 +265,7 @@ html, body {
     object-fit: contain;
 }
 
-/* Bottom navigation bar */
+/* Bottom navigation bar, four column grid */
 .navbar {
     flex: 0 0 auto;
     display: grid;
@@ -223,6 +275,7 @@ html, body {
     padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* Each button for navigation bar */
 .nav-btn {
     height: 66px;
     display: grid;
@@ -234,16 +287,7 @@ html, body {
     text-decoration: none;
 }
 
-.nav-btn svg {
-    width: 34px;
-    height: 34px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
+/* Icons for navigation bar */
 .nav-icon {
     width: 32px;
     height: 32px;
@@ -252,6 +296,7 @@ html, body {
     mask: var(--icon) center / contain no-repeat;
 }
 
+/* Current page's button in navigation bar */
 .nav-btn.active {
     background: #6b7f6a; /* Dark green */
     color: #ffffff; /* White */
@@ -259,13 +304,15 @@ html, body {
 
 /* Styling sizes for desktop */
 @media (min-width: 767px) {
-    /* New layout: Navigation bar on the left */
+
+    /* New layout: Navigation bar on the left, rest is one wider column */
     .app {
         display: grid;
         grid-template-columns: 96px 1fr;
         grid-template-rows: auto 1fr;
     }
 
+    /* Vertical navigation bar on left */
     .navbar {
         grid-column: 1;
         grid-row: 1 / span 2;
@@ -277,48 +324,47 @@ html, body {
         padding-bottom: 0;
     }
 
+    /* Navigation bar buttons */
     .nav-btn {
         height: 88px;
     }
 
-    .nav-btn:not(.active):hover {
-        background: #00000014; /* Faint grey */
-    }
-
-    .nav-btn svg {
-        width: 38px;
-        height: 38px;
-    }
-
+    /* Icons for navigation bar */
     .nav-icon {
         width: 36px;
         height: 36px;
     }
 
+    /* Header is now top of wide right column */
     .header {
         grid-column: 2;
         grid-row: 1;
         padding: 18px 40px;
     }
 
+    /*  Pages is lower part of wide right column */
     .pages {
         grid-column: 2;
         grid-row: 2;
     }
 
+    /* Blossom logo */
     .logo {
         height: 42px;
     }
 
+    /* Nickname */
     .nickname {
         font-size: 22px;
     }
 
+    /* Shadow man avatar */
     .avatar {
         width: 38px;
         height: 38px;
     }
 
+    /* Home page is two columns: Tree on left and panel on right */
     #page-home.active {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -327,74 +373,44 @@ html, body {
         padding: 32px 48px 48px;
     }
 
+    /* Weather */
     .weather {
         top: 24px;
         left: 48px;
     }
 
+    /* Tree */
     .tree {
         width: 100%;
         max-width: 460px;
     }
 
+    /* Box for the tree to be centered in */
     .tree-wrap {
         padding: 40px 0 0;
     }
 
+    /* Decorations on the tree */
+    .decoration {
+        width: 100%;
+        max-width: 460px;
+    }
+
+    /* Green panel to right of tree */
     .panel {
         border-radius: 18px;
         padding: 40px 32px 36px;
         min-height: 0;
     }
 
+    /* Shop */
     .shop {
         gap: 28px;
         padding: 0;
     }
 
+    /* Three starting hidden pages */
     #page-habits, #page-calendar, #page-settings {
         padding: 40px 48px;
     }
-}
-
-.shop-item {
-    width: 100%;
-    max-width: 170px;
-    justify-self: center;
-}
-
-.shop-item .price {
-    position: absolute;
-    left: 6px;
-    bottom: 6px;
-    height: 34px;
-    width: auto;
-    min-width: 34px;
-    padding: 0 10px 0 4px;
-    border-radius: 17px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: #f7f5f0; /* Almost white */
-}
-
-.shop-item .item-status {
-    position: absolute;
-    left: 8px;
-    bottom: 8px;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-.tree-wrap {
-    position: relative;
-}
-
-.decoration {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 78%;
-    max-width: 330px;
-    pointer-events: none;
 }
