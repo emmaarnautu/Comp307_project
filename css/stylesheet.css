@@ -1,5 +1,6 @@
-/* CSS Styling for Frontend */
 /* Default sizing is for mobile size */
+
+/* GENERAL STYLING FOR EVERY PAGE */
 
 /* Styling that applies to everything */
 * {
@@ -93,193 +94,6 @@ html, body {
     margin-bottom: 8px;
 }
 
-/* Home page */
-
-/* Weather */
-.weather {
-    position: absolute;
-    top: 16px;
-    left: 18px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 10px;
-    background: #efece5; /* Very light peach */
-    border: 1px solid #00000014; /* Faint grey */
-    border-radius: 12px;
-    font-size: 14px;
-    z-index: 2;
-}
-
-/* Weather icon */
-.weather img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
-/* Picture of the tree */
-.tree {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Box with tree in the center */
-.tree-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px 24px;
-    position: relative;
-}
-
-/* Layers for tree decorations */
-.tree-layers {
-    position: relative;
-    width: 100%;
-    max-width: 330px;
-}
-/* Decorations on the tree */
-.decoration {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-/* Green panel under tree for stats and shop */
-.panel {
-    background: #e3e6da; /* Very light greenish grey */
-    border: 1px solid #00000014; /* Faint grey */
-    border-radius: 18px 18px 0 0;
-    padding: 50px 20px 24px;
-    min-height: 300px;
-}
-
-/* Stats: Coins and daily streak */
-.stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-/* Place for each stat */
-.stat {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 22px;
-    background: #f7f5f0; /* Almost white */
-    border: 1px solid #00000014; /* Faint grey */
-    border-radius: 10px;
-    padding: 14px 8px;
-}
-
-/* Icon size for the stat icons */
-.stat img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-}
-
-/* Stat number for each stat */
-.stat-num {
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 1;
-    min-width: 44px;
-    text-align: center;
-}
-
-/* Shop: Two columns for shop items */
-.shop {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 16px;
-    margin-top: 40px;
-    padding: 0;
-}
-
-/* Each shop item button */
-.shop-item {
-    position: relative;
-    aspect-ratio: 1.1 / 1;
-    background: #d4bdb3; /* Light peach */
-    border: 1px solid #00000014; /* Faint grey */
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    width: 86%;
-    min-width: 0;
-    justify-self: center;
-    font: inherit;
-    color: inherit;
-    overflow: hidden;
-    padding: 10px;
-}
-
-/* Shop item icons */
-.shop-item img.item-image {
-    width: 85%;
-    height: 85%;
-    object-fit: contain;
-    pointer-events: none;
-    opacity: 0.65;
-    filter: blur(1px);
-}
-
-/* Equipped items are not blurred */
-.shop-item.equipped img.item-image {
-    filter: none;
-    opacity: 1;
-}
-
-/* Shop items prices */
-.shop-item .price {
-    position: absolute;
-    left: 6px;
-    bottom: 6px;
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    color: #4a3a3a; /* Dusty brown */
-    font-weight: 800;
-    font-size: 17px;
-}
-
-/* Coin icon for each shop item's price */
-.shop-item .price-coin {
-    width: 34px;
-    height: 34px;
-    object-fit: contain;
-    grid-area: 1 / 1;
-}
-
-/* Prices for each shop item */
-.shop-item .price-amount {
-    grid-area: 1 / 1;
-    z-index: 1;
-}
-
-/* Label for status of each item */
-.shop-item .item-status {
-    position: absolute;
-    left: 8px;
-    bottom: 8px;
-    font-size: 13px;
-    font-weight: 800;
-}
-
-/* Equipped shop items */
-.shop-item.equipped {
-    border: 2px solid #6b7f6a; /* Dark green */
-}
-
 /* Bottom navigation bar, four column grid */
 .navbar {
     flex: 0 0 auto;
@@ -319,33 +133,6 @@ html, body {
 /* Hide navigation labels on mobile */
 .nav-label {
     display: none;
-}
-
-/* HABITS */
-.habits-title {
-    display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
-}
-
-/* CALENDAR */
-.calendar-title {
-    display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
-}
-
-/* SETTINGS */
-.settings-title {
-    display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
 }
 
 /* Styling sizes for desktop */
@@ -443,45 +230,6 @@ html, body {
         min-height: 100%;
     }
 
-    /* Weather */
-    .weather {
-        top: 24px;
-        left: 32px;
-        padding: 16px 22px;
-        gap: 16px;
-        font-size: 30px;
-        border-radius: 18px;
-        max-width: 160px;
-    }
-
-    /* Icon for the weather */
-    .weather img {
-        width: 50%;
-        height: auto;
-        object-fit: contain;
-    }
-    /* Box for the tree to be centered in */
-    .tree-wrap {
-        padding: 100px 10px 20px;
-        align-items: center;
-        min-width: 0;
-    }
-
-    /* Tree and decoration layers */
-    .tree-layers {
-        width: 100%;
-        max-width: 1100px;
-    }
-
-    /* Green panel to right of tree */
-    .panel {
-        border-radius: 0;
-        border: none;
-        padding: 24px 20px;
-        min-height: 100%;
-        min-width: 0;
-    }
-
     /* Three starting hidden pages */
     #page-habits, #page-calendar, #page-settings {
         padding: 40px 48px;
@@ -496,26 +244,4 @@ html, body {
         text-align: center;
     }
 
-    /* Stats: Coins and daily streak */
-    .stats {
-        gap: 16px;
-    }
-
-    /* For each stat */
-    .stat {
-        padding: 20px 12px;
-        gap: 18px;
-        border-radius: 16px;
-    }
-
-    /* Icons for each stat */
-    .stat img {
-        width: 65px;
-        height: 65px;
-    }
-
-    /* Numerical value for each stat */
-    .stat-num {
-        font-size: 60px;
-    }
 }
