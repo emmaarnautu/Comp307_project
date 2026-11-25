@@ -119,8 +119,7 @@ html, body {
 
 /* Picture of the tree */
 .tree {
-    width: 78%;
-    max-width: 330px;
+    width: 100%;
     height: auto;
     display: block;
 }
@@ -129,18 +128,23 @@ html, body {
 .tree-wrap {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 60px 20px 24px;
     position: relative;
 }
 
+.tree-layers {
+    position: relative;
+    width: 100%;
+    max-width: 330px;
+}
 /* Decorations on the tree */
 .decoration {
     position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 78%;
-    max-width: 330px;
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /* Green panel under tree for stats and shop */
@@ -181,7 +185,7 @@ html, body {
 /* Stat number for each stat */
 .stat-num {
     font-size: 40px;
-    font-weight: 300;
+    font-weight: 600;
     line-height: 1;
     min-width: 44px;
     text-align: center;
@@ -190,37 +194,46 @@ html, body {
 /* Shop: Two columns for shop items */
 .shop {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-    margin-top: 30px;
-    padding: 0 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+    margin-top: 40px;
+    padding: 0;
 }
 
 /* Each shop item button */
 .shop-item {
     position: relative;
-    aspect-ratio: 1.05 / 1;
-    background: #d4bdb3; /* Light pinkish grey */
-    border: 1px solid #00000014; /* Faint grey */
-    border-radius: 8px;
+    aspect-ratio: 1.1 / 1;
+    background: #d4bdb3;
+    border: 1px solid #00000014;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.12s ease;
-    width: 100%;
-    max-width: 170px;
+    width: 86%;
+    min-width: 0;
     justify-self: center;
     font: inherit;
     color: inherit;
+    overflow: hidden;
+    padding: 10px;
 }
 
 /* Shop item icons */
-.shop-item img.item-img {
-    width: 75%;
-    height: 75%;
+.shop-item img.item-image {
+    width: 85%;
+    height: 85%;
     object-fit: contain;
     pointer-events: none;
+    opacity: 0.65;
+    filter: blur(1px);
+}
+
+/* Equipped items are not blurred */
+.shop-item.equipped img.item-image {
+    filter: none;
+    opacity: 1;
 }
 
 /* Shop items prices */
@@ -230,16 +243,23 @@ html, body {
     bottom: 6px;
     width: 34px;
     height: 34px;
-    border-radius: 17px;
-    display: flex;
+    display: grid;
     place-items: center;
-    color: #4a3a3a; /* Dusty brown */
+    color: #4a3a3a;
     font-weight: 800;
     font-size: 17px;
-    padding: 0 10px 0 4px;
-    align-items: center;
-    gap: 4px;
-    background: #f7f5f0; /* Almost white */
+}
+
+.shop-item .price-coin {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    grid-area: 1 / 1;
+}
+
+.shop-item .price-amount {
+    grid-area: 1 / 1;
+    z-index: 1;
 }
 
 /* Label for status of each item */
@@ -257,12 +277,26 @@ html, body {
 }
 
 /* Coin icon for each shop item's price */
-.shop-item img.price-coin {
-    width: 25px;
-    height: 25px;
-    max-width: 25px;
-    max-height: 25px;
-    object-fit: contain;
+.shop-item .price {
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: #4a3a3a;
+    font-weight: 800;
+    font-size: 17px;
+}
+
+.shop-item .price-coin {
+    grid-area: 1 / 1;
+}
+
+.shop-item .price-amount {
+    grid-area: 1 / 1;
+    z-index: 1;
 }
 
 /* Bottom navigation bar, four column grid */
@@ -301,61 +335,79 @@ html, body {
     background: #6b7f6a; /* Dark green */
     color: #ffffff; /* White */
 }
-
+/* Hide navigation labels on mobile */
+.nav-label {
+    display: none;
+}
 /* Styling sizes for desktop */
 @media (min-width: 767px) {
 
     /* New layout: Navigation bar on the left, rest is one wider column */
     .app {
         display: grid;
-        grid-template-columns: 96px 1fr;
-        grid-template-rows: auto 1fr;
+        grid-template-columns: clamp(250px, 16vw, 450px) minmax(0, 1fr);
+        grid-template-rows: 90px minmax(0, 1fr) 68px;
     }
 
     /* Vertical navigation bar on left */
     .navbar {
         grid-column: 1;
-        grid-row: 1 / span 2;
+        grid-row: 2;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        border-top: none;
-        border-right: 1px solid #00000014; /* Faint grey */
-        padding-bottom: 0;
+        gap: 8px;
+        padding: 12px;
+        background: #efece5;
+        border-top: 1px solid #00000014;
     }
 
     /* Navigation bar buttons */
     .nav-btn {
-        height: 88px;
+        display: grid;
+        grid-template-columns: 28px 1fr 28px;
+        align-items: center;
+        height: 65px;
+        padding: 0 20px;
+        gap: 12px;
+        background: #efece5;
+        border: 1px solid #00000014;
+        border-radius: 14px;
     }
-
     /* Icons for navigation bar */
     .nav-icon {
-        width: 36px;
-        height: 36px;
+        width: 28px;
+        height: 28px;
     }
 
     /* Header is now top of wide right column */
     .header {
-        grid-column: 2;
-        grid-row: 1;
-        padding: 18px 40px;
+        display: contents;
     }
 
     /*  Pages is lower part of wide right column */
     .pages {
         grid-column: 2;
-        grid-row: 2;
+        grid-row: 1 / 4;
+        min-width: 0;
+        min-height: 0;
+        border-left: 1px solid #00000014;
     }
 
     /* Blossom logo */
     .logo {
-        height: 42px;
+        grid-column: 1;
+        grid-row: 1;
+        width: 85%;
+        max-width: 250px;
+        height: auto;
+        justify-self: center;
+        align-self: center;
     }
 
     /* Nickname */
     .nickname {
-        font-size: 22px;
+        font-size: 30px;
     }
 
     /* Shadow man avatar */
@@ -367,50 +419,89 @@ html, body {
     /* Home page is two columns: Tree on left and panel on right */
     #page-home.active {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        gap: 48px;
-        padding: 32px 48px 48px;
+        grid-template-columns: 2fr 1fr;
+        align-items: stretch;
+        min-height: 100%;
     }
 
     /* Weather */
     .weather {
         top: 24px;
-        left: 48px;
+        left: 32px;
+        padding: 16px 22px;
+        gap: 16px;
+        font-size: 30px;
+        border-radius: 18px;
+        max-width: 160px;
     }
 
-    /* Tree */
-    .tree {
-        width: 100%;
-        max-width: 460px;
+    .weather img {
+        width: 50%;
+        height: auto;
+        object-fit: contain;
     }
-
     /* Box for the tree to be centered in */
     .tree-wrap {
-        padding: 40px 0 0;
+        padding: 100px 10px 20px;
+        align-items: center;
+        min-width: 0;
     }
 
-    /* Decorations on the tree */
-    .decoration {
+    /* Tree and decoration layers */
+    .tree-layers {
         width: 100%;
-        max-width: 460px;
+        max-width: 1100px;
     }
 
     /* Green panel to right of tree */
     .panel {
-        border-radius: 18px;
-        padding: 40px 32px 36px;
-        min-height: 0;
+        border-radius: 0;
+        border: none;
+        padding: 24px 20px;
+        min-height: 100%;
+        min-width: 0;
     }
 
-    /* Shop */
-    .shop {
-        gap: 28px;
-        padding: 0;
-    }
 
     /* Three starting hidden pages */
     #page-habits, #page-calendar, #page-settings {
         padding: 40px 48px;
+    }
+
+    .user {
+        grid-column: 1;
+        grid-row: 3;
+        background: #cbd1d6;
+        padding: 12px 18px;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+    }
+
+    /* Show navigation labels on desktop */
+    .nav-label {
+        display: block;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-align: center;
+    }
+
+    .stats {
+        gap: 16px;
+    }
+
+    .stat {
+        padding: 20px 12px;
+        gap: 18px;
+        border-radius: 16px;
+    }
+
+    .stat img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .stat-num {
+        font-size: 60px;
     }
 }
