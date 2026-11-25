@@ -2,9 +2,131 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="keywords" content="Comp307 project blossom app">
+    <meta name="description" content="COMP 307 Project: Blossom Calendar">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Blossom - Calendar</title>
+
+    <!-- Link to the react calendar css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-calendar@5.1.0/dist/Calendar.css">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="css/calendar.css">
 </head>
 <body>
+    <div class="app">
+
+        <header class="header">
+            <!-- Blossom logo -->
+            <img id="logo"  src="assets/icons/logo.png" class="logo" alt="Blossom">
+
+            <!-- Nickname and avatar -->
+            <div class="user">
+                <span id="nickname" class="nickname">@Nickname</span>
+                <img id="avatar" src="assets/icons/avatar.png" class="avatar" alt="Profile">
+            </div>
+        </header>
+
+        <!-- Pages -->
+        <main class="pages">
+            <!-- CALENDAR -->
+            <section id="page-calendar" class="page active">
+
+                <h1 class="calendar-title">Calendar</h1>
+
+                <div class="calendar-container">
+
+                    <!-- React calendar render -->
+                    <div class="calendar-card">
+                        <div id="calendar-root"></div>
+                    </div>
+
+                    <div class="cal-side">
+                        <div class="cal-panel">
+                            <!-- Date -->
+                            <h2 class="cal-date">
+                                <span id="cal-month"></span>
+                                <span id="cal-day"></span>
+                            </h2>
+
+                            <!-- Mood -->
+                            <div class="cal-stat">
+                                <span>Mood:</span>
+                                <span id="cal-mood"></span>
+                                <span id="cal-mood-face" class="cal-face"></span>
+                            </div>
+
+                            <!-- Tasks -->
+                            <div class="cal-stat">
+                                <span>Completed:</span>
+                                <span id="cal-tasks"></span>
+                            </div>
+
+                            <!-- Weather -->
+                            <div class="cal-stat">
+                                <span>Weather:</span>
+                                <span id="cal-temp"></span>
+                                <img id="cal-weather-icon" class="cal-icon" src="assets/weathers/Clear.png" alt="Weather">
+                            </div>
+
+                        </div>
+
+                        <!-- Mood Picker -->
+                        <div class="cal-panel">
+                            <h2 class="mood-question">How are you feeling today?</h2>
+                            <div id="mood-picker" class="mood-picker" role="radiogroup" aria-label="Mood"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+
+        <!-- Bottom navigation bar -->
+        <nav class="navbar">
+
+            <!-- Home button -->
+            <a class="nav-btn" href="index.html" aria-label="Home">
+                <span class="nav-icon" style="--icon: url('assets/icons/home.svg')"></span>
+            </a>
+
+            <!-- Habits button -->
+            <a class="nav-btn" href="habits.html" aria-label="Habits">
+                <span class="nav-icon" style="--icon: url('assets/icons/check-circle.svg')"></span>
+            </a>
+
+            <!-- Calendar button -->
+            <a class="nav-btn active" href="calendar.html" aria-label="Calendar">
+                <span class="nav-icon" style="--icon: url('assets/icons/calendar.svg')"></span>
+            </a>
+
+            <!-- Settings button -->
+            <a class="nav-btn" href="settings.html" aria-label="Settings">
+                <span class="nav-icon" style="--icon: url('assets/icons/settings.svg')"></span>
+            </a>
+
+        </nav>
+
+    </div>
+
+    <!-- Scripts and React -->
+
+    <script src="js/calendar.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "react": "https://esm.sh/react@18.3.1",
+            "react/": "https://esm.sh/react@18.3.1/",
+            "react-dom": "https://esm.sh/react-dom@18.3.1",
+            "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+            "react-calendar": "https://esm.sh/react-calendar@5.1.0?external=react,react-dom"
+        }
+    }
+    </script>
+
+    <!-- React: draws only the calendar grid inside #calendar-root -->
+    <script type="module" src="js/calendar_react.js"></script>
 
 </body>
 </html>
