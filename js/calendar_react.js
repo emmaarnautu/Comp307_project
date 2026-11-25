@@ -34,18 +34,21 @@ async function start() {
                 window.dispatchEvent(new CustomEvent("datechange", { detail: newDate }));
             }
 
-            // Dots on days with a log
-            function showDot(info) {
-                if (info.view === "month" && moods[window.blossom.dateKey(info.date)]) {
-                    return h("i", { className: "cal-dot" });
+            // Mood Icon
+            function showMoodIcon(info) {
+                const mood = moods[window.blossom.dateKey(info.date)];
+                if (info.view === "month" && mood) {
+                    return h("img", { className: "cal-mood-icon",
+                        src: window.blossom.moodImg(mood), alt: "" 
+                    });
+                    return null;
                 }
-                return null;
             }
 
             return h(Calendar, {
                 value: date,
                 onChange: handleChange,
-                calendarType: "iso8601",      // week starts on Monday
+                calendarType: "iso8601",
                 locale: "en-US",
                 minDetail: "month",
                 prevLabel: "‹",
@@ -55,7 +58,7 @@ async function start() {
                 formatShortWeekday: function (locale, d) {
                     return d.toLocaleDateString("en-US", { weekday: "short" });
                 },
-                tileContent: showDot
+                tileContent: showMoodIcon
             });
         }
 
