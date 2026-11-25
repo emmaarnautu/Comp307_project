@@ -78,6 +78,7 @@ html, body {
     min-height: 100%;
 }
 
+/* Active pages */
 .page.active {
     display: block;
 }
@@ -133,6 +134,7 @@ html, body {
     position: relative;
 }
 
+/* Layers for tree decorations */
 .tree-layers {
     position: relative;
     width: 100%;
@@ -204,8 +206,8 @@ html, body {
 .shop-item {
     position: relative;
     aspect-ratio: 1.1 / 1;
-    background: #d4bdb3;
-    border: 1px solid #00000014;
+    background: #d4bdb3; /* Light peach */
+    border: 1px solid #00000014; /* Faint grey */
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -245,11 +247,12 @@ html, body {
     height: 34px;
     display: grid;
     place-items: center;
-    color: #4a3a3a;
+    color: #4a3a3a; /* Dusty brown */
     font-weight: 800;
     font-size: 17px;
 }
 
+/* Coin icon for each shop item's price */
 .shop-item .price-coin {
     width: 34px;
     height: 34px;
@@ -257,6 +260,7 @@ html, body {
     grid-area: 1 / 1;
 }
 
+/* Prices for each shop item */
 .shop-item .price-amount {
     grid-area: 1 / 1;
     z-index: 1;
@@ -274,29 +278,6 @@ html, body {
 /* Equipped shop items */
 .shop-item.equipped {
     border: 2px solid #6b7f6a; /* Dark green */
-}
-
-/* Coin icon for each shop item's price */
-.shop-item .price {
-    position: absolute;
-    left: 6px;
-    bottom: 6px;
-    width: 34px;
-    height: 34px;
-    display: grid;
-    place-items: center;
-    color: #4a3a3a;
-    font-weight: 800;
-    font-size: 17px;
-}
-
-.shop-item .price-coin {
-    grid-area: 1 / 1;
-}
-
-.shop-item .price-amount {
-    grid-area: 1 / 1;
-    z-index: 1;
 }
 
 /* Bottom navigation bar, four column grid */
@@ -339,6 +320,34 @@ html, body {
 .nav-label {
     display: none;
 }
+
+/* HABITS */
+.habits-title {
+    display: block;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+}
+
+/* CALENDAR */
+.calendar-title {
+    display: block;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+}
+
+/* SETTINGS */
+.settings-title {
+    display: block;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+}
+
 /* Styling sizes for desktop */
 @media (min-width: 767px) {
 
@@ -358,8 +367,8 @@ html, body {
         justify-content: flex-start;
         gap: 8px;
         padding: 12px;
-        background: #efece5;
-        border-top: 1px solid #00000014;
+        background: #efece5; /* Very light peach */
+        border-top: 1px solid #00000014; /* Faint grey */
     }
 
     /* Navigation bar buttons */
@@ -370,8 +379,8 @@ html, body {
         height: 65px;
         padding: 0 20px;
         gap: 12px;
-        background: #efece5;
-        border: 1px solid #00000014;
+        background: #efece5; /* Very light peach */
+        border: 1px solid #00000014; /* Faint grey */
         border-radius: 14px;
     }
     /* Icons for navigation bar */
@@ -391,7 +400,7 @@ html, body {
         grid-row: 1 / 4;
         min-width: 0;
         min-height: 0;
-        border-left: 1px solid #00000014;
+        border-left: 1px solid #00000014; /* Faint grey */
     }
 
     /* Blossom logo */
@@ -403,6 +412,16 @@ html, body {
         height: auto;
         justify-self: center;
         align-self: center;
+    }
+
+    /* Nickname and avatar */
+    .user {
+        grid-column: 1;
+        grid-row: 3;
+        background: #cbd1d6; /* Very light blueish grey */
+        padding: 12px 18px;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
     }
 
     /* Nickname */
@@ -435,6 +454,7 @@ html, body {
         max-width: 160px;
     }
 
+    /* Icon for the weather */
     .weather img {
         width: 50%;
         height: auto;
@@ -462,19 +482,9 @@ html, body {
         min-width: 0;
     }
 
-
     /* Three starting hidden pages */
     #page-habits, #page-calendar, #page-settings {
         padding: 40px 48px;
-    }
-
-    .user {
-        grid-column: 1;
-        grid-row: 3;
-        background: #cbd1d6;
-        padding: 12px 18px;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
     }
 
     /* Show navigation labels on desktop */
@@ -486,21 +496,25 @@ html, body {
         text-align: center;
     }
 
+    /* Stats: Coins and daily streak */
     .stats {
         gap: 16px;
     }
 
+    /* For each stat */
     .stat {
         padding: 20px 12px;
         gap: 18px;
         border-radius: 16px;
     }
 
+    /* Icons for each stat */
     .stat img {
         width: 65px;
         height: 65px;
     }
 
+    /* Numerical value for each stat */
     .stat-num {
         font-size: 60px;
     }
