@@ -43,6 +43,18 @@
 
 //initialise db
 require_once "db.php";
+require_once __DIR__ . '/session.php';
+
+if (isset($_POST['ticket'])) {
+    $ticketUser = check_ticket($_POST['ticket']);
+    if (!$ticketUser) {
+        echo json_encode(['error' => "Invalid Ticket"]);
+        exit;
+    }
+    $_POST['user_id'] =$ticketUser;
+}
+
+const LOG_DAYS = 30;
 
 //automatic setup
 if (PHP_SAPI === 'cli') {
@@ -82,12 +94,14 @@ function store_log() : void {
         //  `goal_met` tinyint(1) NOT NULL DEFAULT 0
     $userID = $_POST["user_id"] ?? "";
     $mood = $_POST["mood"] ?? "";
-    $weather  = $_POST["weather"] ?? "";
-    $temperature = $_POST["temperature"] ?? "";
 
-    if($userID == "" || $mood == "" || $weather == "" || $temperature == "") {
+    // Optional temp and weather values
+    $weather  = (($_POST["weather"] ?? "") !== "") ? $_POST["weather"] : null;
+    $temperature = (($_POST["temperature"] ?? "") !== "") ? $_POST["temperature"] : null;
+
+    if($userID == "" || !ctype_digit((string)$mood) || (int)$mood < 1 || (int)$mood > 5) {
         $response = [
-            'error' => "Valid userID mood, weather and temperature required!",
+            'error' => "Valid userID and mood required!",
         ];
         echo json_encode($response);
         exit;
@@ -152,6 +166,9 @@ function store_log() : void {
             'goal_met' => $goal_met,
             'log_id' => $isFound['log_id']
         ]);
+
+        remove_old_logs($userID);
+        echo json_encode(['success' => 1]);
         exit;
     }
     //need to insert
@@ -168,6 +185,8 @@ function store_log() : void {
         'daily_goal' => $daily_goal,
         'goal_met' => $goal_met
         ]);
+    remove_old_logs($userID);
+    echo json_encode(['success' => 1]);
     exit;
 }
 
@@ -190,6 +209,11 @@ function show_log() : void {
             'error' => "Invalid user_id or date!",
         ];
         echo json_encode($response);
+        exit;
+    }
+
+    if ($date < oldest_date_kept()) {
+        echo json_encode(['error' => 'Log purged for this date']);
         exit;
     }
 
@@ -239,11 +263,13 @@ function show_logs() : void {
     $query = $pdo->prepare("
         SELECT log_date, mood, weather, temperature, tree_stage, daily_goal, goal_met FROM daily_logs 
                 WHERE user_id = :id 
+                AND log_date >= :oldest
                 ORDER BY log_date
            ");
 
     $query->execute([
-        'id' => $userID
+        'id' => $userID,
+        'oldest' => oldest_date_kept() 
     ]);
     $logs = $query->fetchAll();
 
@@ -265,6 +291,18 @@ function show_logs() : void {
     ];
     echo json_encode($response);
     exit;
+}
+
+function oldest_date_kept() : string {
+    return (new DateTime('today'))->modify('-' . (LOG_DAYS -1) .' days')->format('Y-m-d');
+}
+function remove_old_logs($userID) : void {
+    global $pdo;
+    $query = $pdo->prepare("DELETE FROM daily_logs WHERE user_id = :id AND log_date < :oldest");
+    $query->execute([
+        'id' => $userID,
+        'oldest' => oldest_date_kept()
+    ]);
 }
 
 ?>
