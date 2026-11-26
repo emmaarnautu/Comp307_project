@@ -16,6 +16,8 @@
     border-radius: 12px;
     font-size: 14px;
     z-index: 2;
+    justify-content: center;
+    line-height: 1;
 }
 
 /* Weather icon */
@@ -69,12 +71,13 @@
 /* Stats: Coins and daily streak */
 .stats {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
 }
 
 /* Place for each stat */
 .stat {
+    min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,6 +126,7 @@
     cursor: pointer;
     width: 86%;
     min-width: 0;
+    max-width: 200px;
     justify-self: center;
     font: inherit;
     color: inherit;
@@ -191,23 +195,31 @@
 /* Styling sizes for desktop */
 @media (min-width: 767px) {
 
+    /* Homepage: Tree on the left, panel on the right */
+    #page-home.active {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) clamp(320px, 33%, 560px);
+        align-items: stretch;
+        min-height: 100%;
+    }
+
     /* Weather */
     .weather {
         top: 24px;
         left: 32px;
-        padding: 16px 22px;
+        padding: 16px 24px;
         gap: 16px;
         font-size: 30px;
         border-radius: 18px;
-        max-width: 160px;
     }
 
     /* Icon for the weather */
     .weather img {
-        width: 50%;
-        height: auto;
+        width: 56px;
+        height: 56px;
         object-fit: contain;
     }
+
     /* Box for the tree to be centered in */
     .tree-wrap {
         padding: 100px 10px 20px;
@@ -223,6 +235,7 @@
 
     /* Green panel to right of tree */
     .panel {
+        container-type: inline-size;
         border-radius: 0;
         border: none;
         padding: 24px 20px;
@@ -237,19 +250,21 @@
 
     /* For each stat */
     .stat {
-        padding: 20px 12px;
-        gap: 18px;
+        padding: 20px 8px;
+        gap: clamp(8px, 3cqw, 18px);
         border-radius: 16px;
     }
 
     /* Icons for each stat */
     .stat img {
-        width: 65px;
-        height: 65px;
+        width: clamp(32px, 11cqw, 65px);
+        height: clamp(32px, 11cqw, 65px);
     }
 
     /* Numerical value for each stat */
     .stat-num {
         font-size: 60px;
+        min-width: 0;
     }
+
 }
