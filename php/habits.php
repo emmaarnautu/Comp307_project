@@ -14,6 +14,11 @@
  *              'success' => 0|1
  *              'error'|'habit_id => "..."
  *
+ * HABIT_COUNT:
+ *      Input parameters: "functionName", "user_id", "date"
+ *          $response =
+ *              'count' =>
+ *
  *  SHOW_HABITS:
  *       Input parameters: "functionName", "user_id", "habit_category"
  *       Returns:
@@ -40,6 +45,9 @@ switch ($method) {
     case "HABIT_ADDED" :
         habit_added();
         break;
+    case "HABIT_COUNT":
+        habit_count();
+        break;
     default :
         $response = [
             'error' => "Invalid request",
@@ -48,6 +56,43 @@ switch ($method) {
         exit;
 }
 
+function habit_count()
+{
+    //count habits done today, check if goal reached
+    global $pdo;
+    $userID = $_POST["user_id"] ?? "";
+    $date = $_POST["date"] ?? "";
+
+    if($userID == "" || $date == "") {
+        $response = [
+            'error' => "Invalid user_id or category!"
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
+    $query = $pdo->prepare("
+            SELECT COUNT(*) 
+                FROM habits 
+            WHERE user_id = :id 
+                AND is_active = 1 
+                AND last_completion_date = :today
+    ");
+
+    $query->execute([
+        'today' => $date,
+        'id'    => $userID
+    ]);
+
+    $habitCount = (int)$query->fetchColumn();
+
+    $response = [
+        'count' => $habitCount
+    ];
+    echo json_encode($response);
+    exit;
+
+}
 
 function show_habits() : void
 {
