@@ -156,12 +156,13 @@ html, body {
         padding: 12px;
         background: #efece5; /* Very light peach */
         border-top: 1px solid #00000014; /* Faint grey */
+        container-type: inline-size;
     }
 
     /* Navigation bar buttons */
     .nav-btn {
         display: grid;
-        grid-template-columns: 28px 1fr 28px;
+        grid-template-columns: 28px minmax(0, 1fr) 28px;
         align-items: center;
         height: 65px;
         padding: 0 20px;
@@ -236,10 +237,11 @@ html, body {
     /* Show navigation labels on desktop */
     .nav-label {
         display: block;
-        font-size: 30px;
+        font-size: clamp(15px, calc((100cqw - 120px) / 6.5), 30px);
         font-weight: 600;
-        letter-spacing: 2px;
+        letter-spacing: 0.08em;
         text-align: center;
+        white-space: nowrap;
     }
 
 }
