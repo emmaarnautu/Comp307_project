@@ -200,7 +200,7 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr) clamp(320px, 33%, 560px);
         align-items: stretch;
-        min-height: 100%;
+        height: 100%;
     }
 
     /* Weather */
@@ -222,7 +222,7 @@
 
     /* Box for the tree to be centered in */
     .tree-wrap {
-        padding: 100px 10px 20px;
+        padding: clamp(60px, 10vh, 100px) 10px 20px;
         align-items: center;
         min-width: 0;
     }
@@ -230,7 +230,7 @@
     /* Tree and decoration layers */
     .tree-layers {
         width: 100%;
-        max-width: 1100px;
+        max-width: min(1100px, 75dvh);
     }
 
     /* Green panel to right of tree */
@@ -238,9 +238,7 @@
         container-type: inline-size;
         border-radius: 0;
         border: none;
-        padding: 24px 20px;
-        min-height: 100%;
-        min-width: 0;
+        padding: clamp(12px, 1.5vw, 24px) clamp(10px, 1.2vw, 20px);
     }
 
     /* Stats: Coins and daily streak */
@@ -250,7 +248,7 @@
 
     /* For each stat */
     .stat {
-        padding: 20px 8px;
+        padding: clamp(10px, 1.2vw, 20px) 8px;
         gap: clamp(8px, 3cqw, 18px);
         border-radius: 16px;
     }
@@ -263,8 +261,12 @@
 
     /* Numerical value for each stat */
     .stat-num {
-        font-size: 60px;
+        font-size: clamp(24px, 13cqw, 60px);
         min-width: 0;
     }
 
+    .shop {
+        gap: clamp(10px, 1.5vw, 24px);
+        margin-top: clamp(16px, 2.5vw, 40px);
+    }
 }

@@ -17,7 +17,8 @@ login.addEventListener("submit", function(event) {
             if (data.success) {
                 localStorage.setItem("ticket", data.ticket);
                 localStorage.setItem("username", data.username);
-                window.location.href = "homepage.html";
+                setLocation(data.ticket);
+                message.textContent = "Logging in...";
             } else {
                 message.textContent = data.message;
             }
@@ -28,9 +29,7 @@ login.addEventListener("submit", function(event) {
     req.onerror = function() {
         message.textContent = "Could not connect to server";
     };
-    req.send(
-        "action=login" + "&email=" + encodeURIComponent(email) +
-        "&password=" + encodeURIComponent(password)
+    req.send("action=login" + "&email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(password)
     );
 });
 
@@ -93,3 +92,46 @@ reset.addEventListener("submit", function(event) {
         "&code=" + encodeURIComponent(code) + "&new_password=" + encodeURIComponent(newPassword)
     );
 });
+
+
+function setLocation(ticket) {
+    if (!navigator.geolocation) {
+        window.location.href = "homepage.html";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+            var latitude = position.coords.latitude.toFixed(2);
+            var longitude = position.coords.longitude.toFixed(2);
+            var req = new XMLHttpRequest();
+            req.open("POST", "php/weather.php", true);
+            req.setRequestHeader(
+                "Content-Type",
+                "application/x-www-form-urlencoded"
+            );
+            req.timeout = 5000;
+            req.onload = function() {
+                window.location.href = "homepage.html";
+            };
+            req.onerror = function() {
+                window.location.href = "homepage.html";
+            };
+            req.ontimeout = function() {
+                window.location.href = "homepage.html";
+            };
+            req.send(
+                "action=set_location" + "&ticket=" + encodeURIComponent(ticket) +
+                "&latitude=" + encodeURIComponent(latitude) + "&longitude=" + encodeURIComponent(longitude)
+            );
+        },
+        function(error) {
+            window.location.href = "homepage.html";
+        },
+        {
+            enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 300000
+        }
+    );
+}
