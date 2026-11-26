@@ -150,9 +150,9 @@ async function getWeather(key) {
 async function getCompleted(key) {
     try{
         const data = await post(API.habits, 
-            {functionName: "SHOW_COMPLETED", ticket: getTicket(), date: key });
-            if (data.completed !== undefined) {
-                return data.completed;
+            {functionName: "HABIT_COUNT", ticket: getTicket(), date: key });
+            if (data.count !== undefined) {
+                return data.count;
             }    
     }
     catch (e) {
