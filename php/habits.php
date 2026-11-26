@@ -31,6 +31,16 @@
 
 //initialise db
 require_once "db.php";
+require_once __DIR__ . "/session.php";
+
+if (isset($_POST['ticket'])) {
+    $ticketUser = check_ticket($_POST['ticket']);
+    if (!$ticketUser) {
+        echo json_encode(['error' => "Invalid ticket"]);
+        exit;
+    }
+    $_POST['user_id'] = $ticketUser;
+}
 
 //switch case functions: habit-done(habitID, userID). habit-added(habit_name, habit_days, user_ID, habit_category). show-habits(category, userID).
 $method = strtoupper(trim($_POST['functionName'] ?? ''));
