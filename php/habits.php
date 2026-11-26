@@ -1,6 +1,15 @@
 <?php
 
 /**To call: use POST with functionName = (SHOW_HABITS,HABIT_DONE,HABIT_ADDED) and parameters needed:
+ * SHOW_GOAL :
+ *      Input parameters: "functionName", "user_id",
+ *           $response =
+ *               'error'|'goal' => error message or goal value
+ *  STORE_GOAL :
+ *       Input parameters: "functionName", "user_id", "new_goal"
+ *            $response =
+ *                'error' | 'status' = 1 => error message or nothing if succeeds
+ *
  * HABIT_DONE: marks a habit as done
  *      Input parameters: "functionName", "user_id", "habit_id"
  *      Returns:
@@ -49,6 +58,12 @@ switch ($method) {
     case "SHOW_HABITS" :
         show_habits();
         break;
+    case "SHOW_GOAL" :
+        show_goal();
+        break;
+    case "STORE_GOAL" :
+        store_goal();
+        break;
     case "HABIT_DONE" :
         habit_done();
         break;
@@ -65,6 +80,70 @@ switch ($method) {
         echo json_encode($response);
         exit;
 }
+
+function show_goal() : void
+{
+    global $pdo;
+    $userID = $_POST["user_id"] ?? "";
+
+    if($userID == "") {
+        $response = [
+            'error' => "Invalid user_id!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
+    $query = $pdo->prepare("SELECT daily_goal FROM users WHERE user_id = :user_id");
+    $query->execute([
+        'user_id' => $userID
+    ]);
+
+    $goal = $query->fetch();
+    if (!$goal) {
+        echo json_encode([
+            'error' => 'User not found'
+        ]);
+        exit;
+    }
+
+    $response = [
+        'goal' => (int)$goal['daily_goal']
+    ];
+    echo json_encode($response);
+    exit;
+}
+
+function store_goal() : void {
+    global $pdo;
+    $userID = $_POST["user_id"] ?? "";
+    $newGoal = $_POST["new_goal"] ?? "";
+
+    if($userID == "" || $newGoal == "") {
+        $response = [
+            'error' => "Invalid user_id or goal value!",
+        ];
+        echo json_encode($response);
+        exit;
+    }
+
+    $query = $pdo->prepare("
+                UPDATE users 
+                SET daily_goal = :goal 
+                WHERE user_id = :id
+            ");
+
+    $query->execute([
+        'goal' => $newGoal,
+        'id' => $userID,
+    ]);
+    $response = [
+        'status' => 1
+    ];
+    echo json_encode($response);
+    exit;
+}
+
 
 function habit_count()
 {
@@ -156,7 +235,6 @@ function show_habits() : void
     echo json_encode($response);
     exit;
 }
-
 function habit_done(): void
 {
     global $pdo;
