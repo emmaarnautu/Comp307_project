@@ -1,0 +1,104 @@
+/* Default sizing is for mobile size */
+
+/* SETTINGS STYLING */
+
+/* Page title */
+.settings-title {
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+}
+
+/* LIst of settings */
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 820px;
+    font-size: 34px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    letter-spacing: 0.08em;
+}
+
+/* Each row for the list of settings */
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 64px;
+    padding: 0 18px 0 14px;
+    background: #f7f5f0; /* Almost white */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 16px;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Rows when hovering */
+.setting-row:hover {
+    background: #d4bdb3; /* Light peach */
+}
+
+/* Row while being logged-out (can't be clicked) */
+.setting-row:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+/* Icon for each row */
+.setting-icon {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    object-fit: contain;
+}
+
+/* Text for each row */
+.setting-label {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+/* Styling sizes for desktop */
+@media (min-width: 767px) {
+
+    /* Page title */
+    .settings-title {
+        font-size: 52px;
+        letter-spacing: 0.1em;
+        margin-bottom: 12px;
+    }
+
+    /* List of settings */
+    .settings-list {
+        gap: 24px;
+    }
+
+    /* Each setting in the list of settings */
+    .setting-row {
+        min-height: 88px;
+        gap: 24px;
+        border-radius: 44px;
+        padding: 0 32px 0 22px;
+    }
+
+    /* Icon for each setting */
+    .setting-icon {
+        width: 60px;
+        height: 60px;
+        flex: 0 0 60px;
+        padding: 14px;
+    }
+
+    /* Text for each setting */
+    .setting-label {
+        font-size: 22px;
+    }
+}
