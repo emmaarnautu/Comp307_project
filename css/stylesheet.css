@@ -170,6 +170,12 @@ html, body {
         border: 1px solid #00000014; /* Faint grey */
         border-radius: 14px;
     }
+
+    /* Non-active navigation bar buttons have a hover colour */
+    .nav-btn:not(.active):hover {
+        background: #e6e2d9;
+    }
+
     /* Icons for navigation bar */
     .nav-icon {
         width: 28px;
@@ -220,14 +226,6 @@ html, body {
     .avatar {
         width: 38px;
         height: 38px;
-    }
-
-    /* Home page is two columns: Tree on left and panel on right */
-    #page-home.active {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        align-items: stretch;
-        min-height: 100%;
     }
 
     /* Three starting hidden pages */
