@@ -33,8 +33,37 @@
         <!-- HABITS -->
         <section id="page-habits" class="page active">
 
-            <!-- Title -->
-            <h1 class="habits-title">Habits</h1>
+            <!-- Page title and new habit button -->
+            <div class="habits-top">
+
+                <!-- Title -->
+                <h1 class="habits-title">My Habits</h1>
+
+                <!-- New habit button -->
+                <button type="button" id="open-add" class="add-button">
+                    <span class ="add-plus" aria-hidden="true">+</span>
+                    <span class="add-text">New Habit</span>
+                </button>
+
+            </div>
+
+            <!-- Category filter -->
+            <div id="category-tabs" class="category-tabs">
+                <button type="button" class="category-tab active" data-category="All">All</button>
+                <button type="button" class="category-tab" data-category="Health">Health</button>
+                <button type="button" class="category-tab" data-category="Productivity">Productivity</button>
+                <button type="button" class="category-tab" data-category="Chores">Chores</button>
+                <button type="button" class="category-tab" data-category="Other">Other</button>
+            </div>
+
+            <!-- Today's habit (filled by habits.js) -->
+            <ul id="habit-list" class="habit-list"></ul>
+
+            <!-- Show this message if there are no habits for today -->
+            <p id="empty-message" class="empty-message" hidden>No habits for today!</p>
+
+            <!-- Error message for the list -->
+            <p id="message" class="form message" role="alert"></p>
 
         </section>
 
@@ -71,6 +100,89 @@
 
 </div>
 
+<!-- Pop-up form for adding a habit -->
+<dialog id="add-dialog" class="add-dialog">
+
+    <form id="add-form" class="add-form" novalidate>
+
+        <h2 class="add-title">My New Habit</h2>
+
+        <!-- Habit name -->
+        <label class="field">
+            <span class="field-label">Name</span>
+            <input type="text" id="habit-name" maxlength="100" required>
+        </label>
+
+        <!-- Habit category -->
+        <label class="field">
+            <span class="field-label">Category</span>
+            <select id="habit-category">
+                <option value="Health">Health</option>
+                <option value="Productivity">Productivity</option>
+                <option value="Chores">Chores</option>
+                <option value="Other">Other</option>
+            </select>
+        </label>
+
+        <!-- Days of the week (values are 0 to 6, starting with Sunday) -->
+        <fieldset class="days-field">
+            <legend class="field-label">Repeat On</legend>
+            <div class="days">
+                <label class="day" title="Sunday">
+                    <input type="checkbox" name="day" value="0" checked>
+                    <span>Sunday</span>
+                </label>
+                <label class="day" title="Monday">
+                    <input type="checkbox" name="day" value="1" checked>
+                    <span>Monday</span>
+                </label>
+                <label class="day" title="Tuesday">
+                    <input type="checkbox" name="day" value="2" checked>
+                    <span>Tuesday</span>
+                </label>
+                <label class="day" title="Wednesday">
+                    <input type="checkbox" name="day" value="3" checked>
+                    <span>Wednesday</span>
+                </label>
+                <label class="day" title="Thursday">
+                    <input type="checkbox" name="day" value="4" checked>
+                    <span>Thursday</span>
+                </label>
+                <label class="day" title="Friday">
+                    <input type="checkbox" name="day" value="5" checked>
+                    <span>Friday</span>
+                </label>
+                <label class="day" title="Saturday">
+                    <input type="checkbox" name="day" value="6" checked>
+                    <span>Saturday</span>
+                </label>
+            </div>
+        </fieldset>
+
+        <!-- Error message for the form -->
+        <p id="add-message" class="form-message" role="alert"></p>
+
+        <!-- Cancel and submit buttons for form -->
+        <div class="add-buttons">
+            <button type="button" id="cancel-add" class="cancel-button">Cancel</button>
+            <button type="submit" id="save-habit" class="save-habit">Save Habit</button>
+        </div>
+
+    </form>
+
+</dialog>
+
+<!-- Template for one habit in the list (used by habits.js) -->
+<template id="habit-template">
+    <li class="habit-item">
+        <span class="habit-name"></span>
+        <button type="button" class="habit-check" aria-label="Mark as done" aria-pressed="false">
+            <img class="habit-box" src="assets/icons/square.svg" alt="">
+        </button>
+    </li>
+</template>
+
+<!-- JavaScript for Habits page -->
 <script src="js/habits.js"></script>
 
 </body>
