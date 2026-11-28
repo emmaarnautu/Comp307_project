@@ -1,28 +1,465 @@
-/* Just keeping this stuff here for now, will be removed later */
+/* Default sizing is for mobile size */
 
-/* HABITS */
+/* HABITS STYLING */
+
+/* Top row for page title and new habit button */
+.habits-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+/* Page title */
 .habits-title {
-    display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 0;
+}
+
+/* New habit button */
+.add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #6b7f6a; /* Dark green */
+    color: #ffffff; /* White */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 12px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Plus sign in the new habit button */
+.add-plus {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Hide the words on mobile, only the plus is shown */
+.add-text {
+    display: none;
+}
+
+/* New habit button hover colour */
+.add-button:hover {
+    background: #5d705c; /* Darker green */
+}
+
+/* Category filter: Row of tabs that wraps if needed */
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 12px;
     margin-bottom: 20px;
 }
 
-/* CALENDAR */
-.calendar-title {
-    display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
+/* Each category tab */
+.category-tab {
+    padding: 6px 18px;
+    background: #ffffff; /* White */
+    color: #4a3a3a; /* Dusty brown */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 999px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
 }
 
-/* SETTINGS */
-.settings-title {
+/* Non-active category tabs have a hover colour */
+.category-tab:not(.active):hover {
+    background: #e6e2d9;  /* Yellowish white */
+}
+
+/* Current category tab */
+.category-tab.active {
+    background: #6b7f6a; /* Dark green */
+    color: #ffffff; /* White */
+}
+
+/* List of habits */
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    list-style: none;
+}
+
+/* Each habit in the list */
+.habit-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 18px;
+    background: #ffffff; /* White */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 12px;
+}
+
+/* Habit name */
+.habit-name {
+    min-width: 0;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    overflow-wrap: anywhere;
+}
+
+/* Done habits are slightly faded */
+.habit-item.done .habit-name {
+    opacity: 0.7;
+}
+
+/* Checkbox button */
+.habit-check {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Done habits can't be unticked, so no pointer */
+.habit-check[aria-pressed="true"] {
+    cursor: default;
+}
+
+/* Disabled while saving */
+.habit-check:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* Checkbox icon */
+.habit-box {
     display: block;
-    font-size: 52px;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 20px;
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+/* Message when there are no habits for today */
+.empty-message {
+    padding: 24px 0;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+}
+
+/* Hidden attribute must win over the display above */
+.empty-message[hidden] {
+    display: none;
+}
+
+/* Messages (for the list and for the form) */
+.form-message {
+    margin-top: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Nothing to show, so take up no space */
+.form-message:empty {
+    display: none;
+}
+
+/* Success message */
+.form-message.success {
+    color: #6b7f6a; /* Dark green */
+}
+
+/* Error message */
+.form-message.error {
+    color: #a34a4a; /* Dull red */
+}
+
+/* NEW HABIT POP-UP */
+
+/* Pop-up box, centred on the screen */
+.add-dialog {
+    width: min(92vw, 440px);
+    margin: auto;
+    padding: 24px 20px;
+    background: #f7f5f0; /* Almost white */
+    color: #4a3a3a; /* Dusty brown */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 18px;
+    font-family: inherit;
+}
+
+/* Dimmed page behind the pop-up */
+.add-dialog::backdrop {
+    background: rgba(74, 58, 58, 0.45); /* Dusty brown, see-through */
+}
+
+/* Form inside the pop-up */
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Pop-up title */
+.add-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+/* One question of the form */
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Label above each question */
+.field-label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+/* Name box and category dropdown */
+.field input[type="text"],
+.field select {
+    width: 100%;
+    padding: 10px 12px;
+    background: #ffffff; /* White */
+    color: #4a3a3a; /* Dusty brown */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 10px;
+    font: inherit;
+    font-size: 16px;
+}
+
+/* Highlight the box being typed in */
+.field input[type="text"]:focus,
+.field select:focus {
+    outline: 2px solid #6b7f6a; /* Dark green */
+    outline-offset: 1px;
+}
+
+/* Days of the week box (no default fieldset border) */
+.days-field {
+    border: none;
+    min-width: 0;
+}
+
+/* Space under "Repeat On" */
+.days-field legend {
+    margin-bottom: 8px;
+}
+
+/* Day buttons, wrap onto more lines if needed */
+.days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* One day */
+.day {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Hide the real checkbox (the text next to it acts as the button) */
+.day input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Day button when not chosen */
+.day span {
+    display: block;
+    padding: 6px 12px;
+    background: #ffffff; /* White */
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+/* Day button when chosen */
+.day input:checked + span {
+    background: #6b7f6a; /* Dark green */
+    color: #ffffff; /* White */
+}
+
+/* Keyboard focus on a day */
+.day input:focus-visible + span {
+    outline: 2px solid #6b7f6a; /* Dark green */
+    outline-offset: 2px;
+}
+
+/* Cancel and save habit buttons */
+.add-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Cancel and save habit buttons */
+.cancel-button,
+.save-habit {
+    padding: 10px 18px;
+    border: 1px solid #00000014; /* Faint grey */
+    border-radius: 12px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+}
+
+/* Cancel button */
+.cancel-button {
+    background: #efece5; /* Very light peach */
+    color: #4a3a3a; /* Dusty brown */
+}
+
+.cancel-button:hover {
+    background: #e6e2d9; /* Yellowish white */
+}
+
+/* Save button */
+.save-habit {
+    background: #6b7f6a; /* Dark green */
+    color: #ffffff; /* White */
+}
+
+/* When hovering over save button */
+.save-habit:hover {
+    background: #5d705c;
+}
+
+/* Save button while saving */
+.save-habit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Styling sizes for desktop */
+@media (min-width: 767px) {
+
+    /* Top row */
+    .habits-top {
+        margin-bottom: 24px;
+    }
+
+    /* Page title */
+    .habits-title {
+        font-size: clamp(28px, 2.6vw, 44px);
+    }
+
+    /* New habit button */
+    .add-button {
+        padding: clamp(10px, 1vw, 16px) clamp(16px, 1.6vw, 28px);
+        font-size: clamp(16px, 1.5vw, 26px);
+        border-radius: 14px;
+    }
+
+    /* Show the words on desktop */
+    .add-text {
+        display: inline;
+    }
+
+    /* Plus sign */
+    .add-plus {
+        font-size: clamp(24px, 2.2vw, 36px);
+    }
+
+    /* Category tabs sit in one row, starting on the left */
+    .category-tabs {
+        justify-content: flex-start;
+        gap: 14px 18px;
+        margin-bottom: 28px;
+    }
+
+    /* Each category tab */
+    .category-tab {
+        padding: clamp(6px, 0.7vw, 12px) clamp(18px, 2vw, 34px);
+        font-size: clamp(15px, 1.5vw, 26px);
+    }
+
+    /* List of habits */
+    .habit-list {
+        gap: 18px;
+    }
+
+    /* Each habit */
+    .habit-item {
+        padding: clamp(14px, 1.6vw, 26px) clamp(20px, 2vw, 36px);
+        border-radius: 999px;
+    }
+
+    /* Habit name */
+    .habit-name {
+        font-size: clamp(16px, 1.6vw, 28px);
+    }
+
+    /* Checkbox picture */
+    .habit-box {
+        width: clamp(30px, 2.8vw, 46px);
+        height: clamp(30px, 2.8vw, 46px);
+    }
+
+    /* Empty and other messages */
+    .empty-message {
+        font-size: clamp(16px, 1.6vw, 28px);
+    }
+
+    /* Form message */
+    .form-message {
+        font-size: clamp(14px, 1.3vw, 22px);
+    }
+
+    /* Pop-up */
+    .add-dialog {
+        width: min(90vw, 520px);
+        padding: 32px 28px;
+    }
+
+    /* Pop-up title */
+    .add-title {
+        font-size: 26px;
+    }
+
+    /* Label above each question */
+    .field-label {
+        font-size: 16px;
+    }
+
+    /* Day button when not chosen */
+    .day span {
+        font-size: 14px;
+    }
+
+    /* Cancel and save habit buttons */
+    .cancel-button,
+    .save-habit {
+        font-size: 16px;
+    }
 }

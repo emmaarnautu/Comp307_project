@@ -172,7 +172,7 @@ html, body {
 
     /* Non-active navigation bar buttons have a hover colour */
     .nav-btn:not(.active):hover {
-        background: #e6e2d9;
+        background: #e6e2d9; /* Yellowish white */
     }
 
     /* Icons for navigation bar */
